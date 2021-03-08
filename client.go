@@ -6,12 +6,18 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 const (
-	baseEndpoint        = "https://api.unsplash.com/"
-	randomPhotoEndpoint = baseEndpoint + "photos/random"
+	baseEndpoint         = "https://api.unsplash.com/"
+	randomPhotoEndpoint  = baseEndpoint + "photos/random"
+	allPhotosEndpoint    = baseEndpoint + "photos"
+	searchPhotosEndpoint = baseEndpoint + "search/photos"
 )
+
+// QueryParams defines url link paramaters
+type QueryParams map[string]string
 
 // Client defines methods to interact with the Unsplash API
 type Client struct {
@@ -23,7 +29,9 @@ type Client struct {
 // Config sets up configuration details to be used in making requests.
 // It contains headers that will be used in all client requests.
 type Config struct {
-	Headers http.Header
+	Headers      http.Header
+	AuthInHeader bool // if true, Client-ID YOUR_ACCESS_KEY is added to the request Authentication header
+	// if false, client_id is passed as a query parameter to the url being requested
 }
 
 // NewClient initializes a new Client.
@@ -32,25 +40,21 @@ func NewClient(clientID string, client *http.Client, config *Config) *Client {
 	if client == nil {
 		client = http.DefaultClient
 	}
+	config.Headers.Add("Accept-Version", "v1") // Add api version
+	// Unsplash strongly encourages a specific request of the api version
+
 	return &Client{ClientID: clientID, HTTPClient: client, Config: config}
 }
 
 // Utility functions to get data from the API using a context
 
-func (c *Client) getHTTP(ctx context.Context, link string, queryParams map[string]string) (*http.Response, error) {
+func (c *Client) getHTTP(ctx context.Context, link string) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, link, nil)
+	// set request headers specified in Client.Config
+	req.Header = c.Config.Headers
 	if err != nil {
 		return nil, err
 	}
-	// add query params to request
-	if queryParams != nil {
-		q := req.URL.Query()
-		for key, val := range queryParams {
-			q.Add(key, val)
-		}
-		req.URL.RawQuery = q.Encode()
-	}
-
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -58,8 +62,8 @@ func (c *Client) getHTTP(ctx context.Context, link string, queryParams map[strin
 	return resp, nil
 }
 
-func (c *Client) getBodyBytes(ctx context.Context, link string, queryParams map[string]string) ([]byte, error) {
-	resp, err := c.getHTTP(ctx, link, queryParams)
+func (c *Client) getBodyBytes(ctx context.Context, link string) ([]byte, error) {
+	resp, err := c.getHTTP(ctx, link)
 	if err != nil {
 		return nil, err
 	} else if resp.StatusCode != http.StatusOK {
@@ -75,19 +79,99 @@ func (c *Client) getBodyBytes(ctx context.Context, link string, queryParams map[
 	return data, nil
 }
 
-func (c *Client) getRandomPhoto(ctx context.Context, queryParams map[string]string) (*Photo, error) {
-	data, err := c.getBodyBytes(ctx, randomPhotoEndpoint, queryParams)
+// get a single page with a list of all photos
+// https://unsplash.com/documentation#list-photos
+func (c *Client) getPhotoList(ctx context.Context, queryParams QueryParams) ([]Photo, error) {
+	link, err := buildURL(allPhotosEndpoint, queryParams)
 	if err != nil {
-		return &Photo{}, err
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var pics []Photo
+	err = parseJSON(data, &pics)
+	if err != nil {
+		return nil, err
+	}
+	return pics, nil
+}
+
+// get a Photo using photo ID
+// https://unsplash.com/documentation#get-a-photo
+func (c *Client) getPhoto(ctx context.Context, id string) (*Photo, error) {
+	link := baseEndpoint + "photos/" + id
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var pic Photo
+	err = parseJSON(data, &pic)
+	if err != nil {
+		return nil, err
+	}
+	return &pic, nil
+}
+
+// get a random Photo
+// return a list of photos if a count query parameter is provided
+// https://unsplash.com/documentation#get-a-random-photo
+func (c *Client) getRandomPhoto(ctx context.Context, queryParams QueryParams) (interface{}, error) {
+	link, err := buildURL(randomPhotoEndpoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
 	}
 
-	// parse data to Photo object
+	/* parse data to Photo object
+	or []Photo is count query parameter is present
+
+	From API documentation:
+	Note: When supplying a count parameter - and only then -
+	the response will be an array of photos, even if the value of count is 1.
+	*/
+	if _, ok := queryParams["count"]; ok {
+		var pics []Photo
+		err = parseJSON(data, pics)
+		if err != nil {
+			return nil, err
+		}
+		return &pics, nil
+	}
+
 	var pic Photo
 	err = parseJSON(data, pic)
 	if err != nil {
-		return &Photo{}, err
+		return nil, err
 	}
 	return &pic, nil
+}
+
+// get a single page with photo search results
+// https://unsplash.com/documentation#search-photos
+func (c *Client) searchPhoto(ctx context.Context, queryParams QueryParams) (*PhotoSearchResult, error) {
+	link, err := buildURL(searchPhotosEndpoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	// throw an error if search query parameter not in URL
+	if _, ok := queryParams["query"]; !ok {
+		return nil, errQueryNotInURL(link)
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var res PhotoSearchResult
+	err = parseJSON(data, &res)
+	if err != nil {
+		return nil, err
+	}
+	return &res, nil
 }
 
 func parseJSON(data []byte, desiredObject interface{}) error {
@@ -95,4 +179,21 @@ func parseJSON(data []byte, desiredObject interface{}) error {
 		return fmt.Errorf("error parsing json to %T: %v", desiredObject, err)
 	}
 	return nil
+}
+
+func buildURL(link string, queryParams QueryParams) (string, error) {
+	// add query params to request
+	if queryParams != nil {
+		URL, err := url.Parse(link)
+		if err != nil {
+			return "", err
+		}
+		q := URL.Query()
+		for key, val := range queryParams {
+			q.Add(key, val)
+		}
+		URL.RawQuery = q.Encode()
+		return URL.String(), nil
+	}
+	return link, nil
 }
