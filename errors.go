@@ -6,6 +6,12 @@ import (
 	"net/http"
 )
 
+type errQueryNotInURL string
+
+func (e errQueryNotInURL) Error() string {
+	return "search query parameter absent in url: " + string(e)
+}
+
 type errStatusCode struct {
 	statusCode int
 	reasons    []string
