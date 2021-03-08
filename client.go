@@ -51,7 +51,7 @@ func NewClient(clientID string, client *http.Client, config *Config) *Client {
 	return &Client{ClientID: clientID, HTTPClient: client, Config: config}
 }
 
-// Utility functions to get data from the API using a context
+// Client http methods to get data from the API using a context
 
 func (c *Client) getHTTP(ctx context.Context, link string) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, link, nil)
@@ -83,6 +83,8 @@ func (c *Client) getBodyBytes(ctx context.Context, link string) ([]byte, error) 
 
 	return data, nil
 }
+
+// photo functions
 
 // get a single page with a list of all photos
 // https://unsplash.com/documentation#list-photos
@@ -156,7 +158,6 @@ func (c *Client) getRandomPhoto(ctx context.Context, queryParams QueryParams) (i
 	return &pic, nil
 }
 
-
 // search functions
 
 // get a single page with photo search results
@@ -227,6 +228,81 @@ func (c *Client) searchUsers(ctx context.Context, queryParams QueryParams) (*Use
 	}
 	return &res, nil
 }
+
+// collections functions
+
+// gets a single page of a list of collections
+// https://unsplash.com/documentation#list-collections
+func (c *Client) getCollectionsList(ctx context.Context, queryParams QueryParams) ([]Collection, error) {
+	link, err := buildURL(collectionsListEndpoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var collections []Collection
+	err = parseJSON(data, collections)
+	if err != nil {
+		return nil, err
+	}
+	return collections, nil
+}
+
+// get a collection using id
+// https://unsplash.com/documentation#get-a-collection
+func (c *Client) getCollection(ctx context.Context, id int) (*Collection, error) {
+	endPoint := collectionsListEndpoint + fmt.Sprint(id)
+	data, err := c.getBodyBytes(ctx, endPoint)
+	if err != nil {
+		return nil, err
+	}
+	var collection Collection
+	err = parseJSON(data, &collection)
+	if err != nil {
+		return nil, err
+	}
+	return &collection, nil
+}
+
+// Retrieve a collection's photos
+// https://unsplash.com/documentation#get-a-collections-photos
+func (c *Client) getCollectionPhotos(ctx context.Context, id int, queryParams QueryParams) ([]Photo, error) {
+	endPoint := collectionsListEndpoint + fmt.Sprint(id) + "/photos"
+	link, err := buildURL(endPoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var pics []Photo
+	err = parseJSON(data, pics)
+	if err != nil {
+		return nil, err
+	}
+	return pics, nil
+}
+
+// Retrieve a list of collections related to this one.
+// https://unsplash.com/documentation#list-a-collections-related-collections
+func (c *Client) getRelatedCollections(ctx context.Context, id int) ([]Collection, error) {
+	endPoint := collectionsListEndpoint + fmt.Sprint(id) + "/related"
+	data, err := c.getBodyBytes(ctx, endPoint)
+	if err != nil {
+		return nil, err
+	}
+	var collections []Collection
+	err = parseJSON(data, collections)
+	if err != nil {
+		return nil, err
+	}
+	return collections, nil
+}
+
+// utility functions
 
 func parseJSON(data []byte, desiredObject interface{}) error {
 	if err := json.Unmarshal(data, desiredObject); err != nil {
