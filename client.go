@@ -10,10 +10,15 @@ import (
 )
 
 const (
-	baseEndpoint         = "https://api.unsplash.com/"
-	randomPhotoEndpoint  = baseEndpoint + "photos/random"
-	allPhotosEndpoint    = baseEndpoint + "photos"
-	searchPhotosEndpoint = baseEndpoint + "search/photos"
+	baseEndpoint              = "https://api.unsplash.com/"
+	baseUserEndpoint          = baseEndpoint + "users/"
+	randomPhotoEndpoint       = baseEndpoint + "photos/random/"
+	allPhotosEndpoint         = baseEndpoint + "photos/"
+	searchPhotosEndpoint      = baseEndpoint + "search/photos"
+	searchCollectionsEndpoint = baseEndpoint + "search/collections"
+	searchUsersEndpoint       = baseEndpoint + "search/users"
+	topicsListEndpoint        = baseEndpoint + "topics/"
+	collectionsListEndpoint   = baseEndpoint + "collections/"
 )
 
 // QueryParams defines url link paramaters
@@ -101,7 +106,7 @@ func (c *Client) getPhotoList(ctx context.Context, queryParams QueryParams) ([]P
 // get a Photo using photo ID
 // https://unsplash.com/documentation#get-a-photo
 func (c *Client) getPhoto(ctx context.Context, id string) (*Photo, error) {
-	link := baseEndpoint + "photos/" + id
+	link := allPhotosEndpoint + id
 	data, err := c.getBodyBytes(ctx, link)
 	if err != nil {
 		return nil, err
