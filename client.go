@@ -302,6 +302,63 @@ func (c *Client) getRelatedCollections(ctx context.Context, id int) ([]Collectio
 	return collections, nil
 }
 
+// topics functions
+
+// Get a single page from the list of all topics.
+// https://unsplash.com/documentation#list-topics
+func (c *Client) getTopicsList(ctx context.Context, queryParams QueryParams) ([]Topic, error) {
+	link, err := buildURL(topicsListEndpoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var topics []Topic
+	err = parseJSON(data, topics)
+	if err != nil {
+		return nil, err
+	}
+	return topics, nil
+}
+
+// Retrieve a single topic.
+// https://unsplash.com/documentation#get-a-topic
+func (c *Client) getTopic(ctx context.Context, IDOrSlug string) (*Topic, error) {
+	endPoint := topicsListEndpoint + IDOrSlug
+	data, err := c.getBodyBytes(ctx, endPoint)
+	if err != nil {
+		return nil, err
+	}
+	var topic Topic
+	err = parseJSON(data, &topic)
+	if err != nil {
+		return nil, err
+	}
+	return &topic, nil
+}
+
+// Retrieve a topic’s photos.
+// https://unsplash.com/documentation#get-a-topics-photos
+func (c *Client) getTopicPhotos(ctx context.Context, IDOrSlug string, queryParams QueryParams) ([]Photo, error) {
+	endPoint := topicsListEndpoint + IDOrSlug + "/photos"
+	link, err := buildURL(endPoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var pics []Photo
+	err = parseJSON(data, &pics)
+	if err != nil {
+		return nil, err
+	}
+	return pics, err
+}
+
 // utility functions
 
 func parseJSON(data []byte, desiredObject interface{}) error {
