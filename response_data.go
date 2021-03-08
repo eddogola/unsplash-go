@@ -52,7 +52,12 @@ type Photo struct {
 		Download         string `json:"download"`
 		DownloadLocation string `json:"download_location"`
 	} `json:"links"`
-	User User `json:"user"`
+	User       User `json:"user"`
+	Statistics struct {
+		Downloads Stats `json:"downloads"`
+		Views     Stats `json:"views"`
+		Likes     Stats `json:"likes"`
+	} `json:"statistics"`
 }
 
 // User defines public fields Unsplash provides on a user
@@ -200,4 +205,33 @@ type StatsMonth struct {
 	NewDevelopers    int `json:"new_developers"`
 	NewApplications  int `json:"new_applications"`
 	NewRequests      int `json:"new_requests"`
+}
+
+// Stats defines a blueprint for statistics
+type Stats struct {
+	Total      int `json:"total"`
+	Historical struct {
+		Change     int    `json:"change"`
+		Resolution string `json:"resolution"`
+		Quantity   int    `json:"quantity"`
+		Values     []struct {
+			Date  string `json:"date"`
+			Value int    `json:"value"`
+		} `json:"values"`
+	} `json:"historical"`
+}
+
+// PhotoStats defines specific photo statistics fields
+type PhotoStats struct {
+	ID        string `json:"id"`
+	Downloads Stats  `json:"downloads"`
+	Views     Stats  `json:"views"`
+	Likes     Stats  `json:"likes"`
+}
+
+// UserStats defines specific user statistics fields
+type UserStats struct {
+	Username  string `json:"username"`
+	Downloads Stats  `json:"downloads"`
+	Views     Stats  `json:"views"`
 }
