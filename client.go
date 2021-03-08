@@ -184,6 +184,29 @@ func (c *Client) getUserCollections(ctx context.Context, username string, queryP
 	return collections, nil
 }
 
+
+
+// Retrieve the consolidated number of downloads, views and likes of all user’s photos, 
+// as well as the historical breakdown and average of these stats in a specific timeframe (default is 30 days).
+// https://unsplash.com/documentation#get-a-users-statistics
+func (c *Client) getUserStats(ctx context.Context, username string, queryParams QueryParams) (*UserStats, error) {
+	endPoint := baseUserEndpoint + username + "/statistics"
+	link, err := buildURL(endPoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var us UserStats
+	err = parseJSON(data, &us)
+	if err != nil {
+		return nil, err
+	}
+	return &us, nil
+}
+
 // photo functions
 
 // get a single page with a list of all photos
@@ -207,8 +230,8 @@ func (c *Client) getPhotoList(ctx context.Context, queryParams QueryParams) ([]P
 
 // get a Photo using photo ID
 // https://unsplash.com/documentation#get-a-photo
-func (c *Client) getPhoto(ctx context.Context, id string) (*Photo, error) {
-	link := allPhotosEndpoint + id
+func (c *Client) getPhoto(ctx context.Context, ID string) (*Photo, error) {
+	link := allPhotosEndpoint + ID
 	data, err := c.getBodyBytes(ctx, link)
 	if err != nil {
 		return nil, err
@@ -256,6 +279,27 @@ func (c *Client) getRandomPhoto(ctx context.Context, queryParams QueryParams) (i
 		return nil, err
 	}
 	return &pic, nil
+}
+
+// Retrieve total number of downloads, views and likes of a single photo, as well as the historical 
+// breakdown of these stats in a specific timeframe (default is 30 days).
+// https://unsplash.com/documentation#get-a-photos-statistics
+func (c *Client) getPhotoStats(ctx context.Context, ID string, queryParams QueryParams) (*PhotoStats, error) {
+	endPoint := allPhotosEndpoint + ID + "/statistics"
+	link, err := buildURL(endPoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var ps PhotoStats
+	err = parseJSON(data, &ps)
+	if err != nil {
+		return nil, err
+	}
+	return &ps, nil
 }
 
 // search functions
