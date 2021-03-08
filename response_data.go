@@ -132,6 +132,22 @@ type PhotoSearchResult struct {
 	Results    []Photo `json:"results"`
 }
 
+// CollectionSearchResult defines the structure of the response gotten
+// after searching for a collection
+type CollectionSearchResult struct {
+	Total      int          `json:"total"`
+	TotalPages int          `json:"total_pages"`
+	Results    []Collection `json:"results"`
+}
+
+// UserSearchResult defines the structure of the response gotten
+// after searching for a user
+type UserSearchResult struct {
+	Total      int          `json:"total"`
+	TotalPages int          `json:"total_pages"`
+	Results    []User `json:"results"`
+}
+
 // Topic defines fields in an Unsplash topic
 type Topic struct {
 	ID          string `json:"id"`
