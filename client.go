@@ -19,6 +19,8 @@ const (
 	searchUsersEndpoint       = baseEndpoint + "search/users"
 	topicsListEndpoint        = baseEndpoint + "topics/"
 	collectionsListEndpoint   = baseEndpoint + "collections/"
+	statsTotalEndpoint        = baseEndpoint + "stats/total"
+	statsMonthEndpoint        = baseEndpoint + "stats/month"
 )
 
 // QueryParams defines url link paramaters
@@ -104,7 +106,7 @@ func (c *Client) getUserPublicProfile(ctx context.Context, username string) (*Us
 
 // Retrieve a single user’s portfolio link.
 // https://unsplash.com/documentation#get-a-users-portfolio-link
-func (c *Client) getUserPortfolioLink(ctx context.Context, username string) (string, error ) {
+func (c *Client) getUserPortfolioLink(ctx context.Context, username string) (string, error) {
 	endPoint := baseUserEndpoint + username + "/portfolio"
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
@@ -455,6 +457,38 @@ func (c *Client) getTopicPhotos(ctx context.Context, IDOrSlug string, queryParam
 		return nil, err
 	}
 	return pics, err
+}
+
+// stats functions
+
+// Get a list of counts for all of Unsplash.
+// https://unsplash.com/documentation#totals
+func (c *Client) getStatsTotal(ctx context.Context) (*StatsTotal, error) {
+	data, err := c.getBodyBytes(ctx, statsTotalEndpoint)
+	if err != nil {
+		return nil, err
+	}
+	var stats StatsTotal
+	err = parseJSON(data, stats)
+	if err != nil {
+		return nil, err
+	}
+	return &stats, nil
+}
+
+// Get the overall Unsplash stats for the past 30 days.
+// https://unsplash.com/documentation#month
+func (c *Client) getStatsMonth(ctx context.Context) (*StatsMonth, error) {
+	data, err := c.getBodyBytes(ctx, statsTotalEndpoint)
+	if err != nil {
+		return nil, err
+	}
+	var stats StatsMonth
+	err = parseJSON(data, stats)
+	if err != nil {
+		return nil, err
+	}
+	return &stats, nil
 }
 
 // utility functions
