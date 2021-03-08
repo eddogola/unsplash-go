@@ -143,8 +143,8 @@ type CollectionSearchResult struct {
 // UserSearchResult defines the structure of the response gotten
 // after searching for a user
 type UserSearchResult struct {
-	Total      int          `json:"total"`
-	TotalPages int          `json:"total_pages"`
+	Total      int    `json:"total"`
+	TotalPages int    `json:"total_pages"`
 	Results    []User `json:"results"`
 }
 
@@ -172,4 +172,32 @@ type Topic struct {
 	TotalCurrentUserSubmissions int     `json:"total_current_user_submissions"`
 	CoverPhoto                  Photo   `json:"cover_photo"`
 	PreviewPhotos               []Photo `json:"preview_photos"`
+}
+
+// StatsTotal defines fields for an Unsplash Total Stats Resource
+type StatsTotal struct {
+	Photos             int `json:"photos"`
+	Downloads          int `json:"downloads"`
+	Views              int `json:"views"`
+	Likes              int `json:"likes"`
+	Photographers      int `json:"photographers"`
+	Pixels             int `json:"pixels"`
+	DownloadsPerSecond int `json:"downloads_per_second"`
+	ViewPerSecond      int `json:"views_per_second"`
+	Developers         int `json:"developers"`
+	Applications       int `json:"applications"`
+	Requests           int `json:"requests"`
+}
+
+// StatsMonth defines fields for an Unsplash 30-day stats
+type StatsMonth struct {
+	Downloads        int `json:"downloads"`
+	Views            int `json:"views"`
+	Likes            int `json:"likes"`
+	NewPhotos        int `json:"new_photos"`
+	NewPhotographers int `json:"new_photographers"`
+	NewPixels        int `json:"new_pixels"`
+	NewDevelopers    int `json:"new_developers"`
+	NewApplications  int `json:"new_applications"`
+	NewRequests      int `json:"new_requests"`
 }
