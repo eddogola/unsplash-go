@@ -84,6 +84,104 @@ func (c *Client) getBodyBytes(ctx context.Context, link string) ([]byte, error) 
 	return data, nil
 }
 
+// user functions
+
+// Retrieve public details on a given user.
+// https://unsplash.com/documentation#get-a-users-public-profile
+func (c *Client) getUserPublicProfile(ctx context.Context, username string) (*User, error) {
+	endPoint := baseUserEndpoint + username
+	data, err := c.getBodyBytes(ctx, endPoint)
+	if err != nil {
+		return nil, err
+	}
+	var user User
+	err = parseJSON(data, user)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+// Retrieve a single user’s portfolio link.
+// https://unsplash.com/documentation#get-a-users-portfolio-link
+func (c *Client) getUserPortfolioLink(ctx context.Context, username string) (string, error ) {
+	endPoint := baseUserEndpoint + username + "/portfolio"
+	data, err := c.getBodyBytes(ctx, endPoint)
+	if err != nil {
+		return "", err
+	}
+
+	// parse json response data using local struct since it has only onee field
+	var resp struct {
+		Link string `json:"url"`
+	}
+	err = parseJSON(data, &resp)
+	if err != nil {
+		return "", err
+	}
+	return resp.Link, nil
+}
+
+// Get a list of photos uploaded by a user.
+// https://unsplash.com/documentation#list-a-users-photos
+func (c *Client) getUserPhotos(ctx context.Context, username string, queryParams QueryParams) ([]Photo, error) {
+	endPoint := baseUserEndpoint + username
+	link, err := buildURL(endPoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var pics []Photo
+	err = parseJSON(data, &pics)
+	if err != nil {
+		return nil, err
+	}
+	return pics, nil
+}
+
+// Get a list of photos liked by a user.
+// https://unsplash.com/documentation#list-a-users-liked-photos
+func (c *Client) getUserLikedPhotos(ctx context.Context, username string, queryParams QueryParams) ([]Photo, error) {
+	endPoint := baseUserEndpoint + username + "/likes"
+	link, err := buildURL(endPoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var pics []Photo
+	err = parseJSON(data, &pics)
+	if err != nil {
+		return nil, err
+	}
+	return pics, nil
+}
+
+// Get a list of collections created by the user.
+// https://unsplash.com/documentation#list-a-users-collections
+func (c *Client) getUserCollections(ctx context.Context, username string, queryParams QueryParams) ([]Collection, error) {
+	endPoint := baseUserEndpoint + username + "/collections"
+	link, err := buildURL(endPoint, queryParams)
+	if err != nil {
+		return nil, err
+	}
+	data, err := c.getBodyBytes(ctx, link)
+	if err != nil {
+		return nil, err
+	}
+	var collections []Collection
+	err = parseJSON(data, &collections)
+	if err != nil {
+		return nil, err
+	}
+	return collections, nil
+}
+
 // photo functions
 
 // get a single page with a list of all photos
