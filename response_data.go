@@ -235,3 +235,11 @@ type UserStats struct {
 	Downloads Stats  `json:"downloads"`
 	Views     Stats  `json:"views"`
 }
+
+// AuthResponse defines fields gotten when authenticanting Unsplash using OAuth2
+type AuthResponse struct {
+	AccessToken string `json:"access_token"`
+	TokenType   string `json:"token_type"`
+	Scope       string `json:"scope"`
+	CreatedAt   int    `json:"created_at"`
+}
