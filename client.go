@@ -184,9 +184,7 @@ func (c *Client) getUserCollections(ctx context.Context, username string, queryP
 	return collections, nil
 }
 
-
-
-// Retrieve the consolidated number of downloads, views and likes of all user’s photos, 
+// Retrieve the consolidated number of downloads, views and likes of all user’s photos,
 // as well as the historical breakdown and average of these stats in a specific timeframe (default is 30 days).
 // https://unsplash.com/documentation#get-a-users-statistics
 func (c *Client) getUserStats(ctx context.Context, username string, queryParams QueryParams) (*UserStats, error) {
@@ -281,7 +279,7 @@ func (c *Client) getRandomPhoto(ctx context.Context, queryParams QueryParams) (i
 	return &pic, nil
 }
 
-// Retrieve total number of downloads, views and likes of a single photo, as well as the historical 
+// Retrieve total number of downloads, views and likes of a single photo, as well as the historical
 // breakdown of these stats in a specific timeframe (default is 30 days).
 // https://unsplash.com/documentation#get-a-photos-statistics
 func (c *Client) getPhotoStats(ctx context.Context, ID string, queryParams QueryParams) (*PhotoStats, error) {
