@@ -14,3 +14,9 @@ const (
 	readCollectionsScope  = "read_collections"  // View a user’s private collections.
 	writeCollectionsScope = "write_collections" // Create and update a user’s collections.
 )
+
+// Private authorization endpoints
+const (
+	authEndpoint = "https://unsplash.com/oauth/authorize"
+	authTokenEndpoint = "https://unsplash.com/oauth/token"
+)
