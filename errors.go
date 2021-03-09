@@ -1,9 +1,14 @@
 package unsplash
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+)
+
+var (
+	errCodeQueryParamNotFound = errors.New("`code` query parameter not found in the request URL")
 )
 
 type errQueryNotInURL string
