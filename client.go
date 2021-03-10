@@ -37,6 +37,8 @@ type Config struct {
 	Headers      http.Header
 	AuthInHeader bool // if true, Client-ID YOUR_ACCESS_KEY is added to the request Authentication header
 	// if false, client_id is passed as a query parameter to the url being requested
+	LowContentSafety bool // if true, the `content_safety` parameter is set to `low`
+	// otherwise, it is `high`
 }
 
 // NewClient initializes a new Client.
