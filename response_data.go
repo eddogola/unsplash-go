@@ -66,6 +66,7 @@ type User struct {
 	UpdatedAt         string `json:"updated_at"`
 	Username          string `json:"username"`
 	Name              string `json:"name"`
+	Email             string `json:"email"`
 	FirstName         string `json:"first_name"`
 	LastName          string `json:"last_name"`
 	InstagramUsername string `json:"instagram_username"`
@@ -76,10 +77,11 @@ type User struct {
 	TotalLikes        int    `json:"total_likes"`
 	TotalPhotos       int    `json:"total_photos"`
 	TotalCollections  int    `json:"total_collections"`
-	FolloweddByUser   bool   `json:"followed_by_user"`
+	FollowedByUser    bool   `json:"followed_by_user"`
 	FollowersCount    int    `json:"followers_count"`
 	FollowingCount    int    `json:"following_count"`
 	Downloads         int    `json:"downloads"`
+	UploadsRemaining  int    `json:"uploads_remaining"`
 	AcceptedTos       bool   `json:"accepted_tos"`
 	ProfileImage      struct {
 		Small  string `json:"small"`
