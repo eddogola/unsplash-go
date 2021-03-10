@@ -18,6 +18,16 @@ type ResizeOptions struct {
 	//https://docs.imgix.com/apis/rendering/pixel-density/dpr
 }
 
+// NewDefaultResizeOptions takes in width and height to return a new default ResizeOptions
+// with custom dimensions
+func NewDefaultResizeOptions(w, h int) *ResizeOptions {
+	width := fmt.Sprint(w)
+	height := fmt.Sprint(h)
+	return &ResizeOptions{Width: width,
+		Height: height,
+		Auto:   "format"}
+}
+
 func (rOptions ResizeOptions) String() string {
 	var result string
 	options := map[string]string{
