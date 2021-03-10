@@ -1,9 +1,7 @@
 package unsplash
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -34,6 +32,16 @@ const (
 // AuthScopes lists all scopes used in a particular request
 type AuthScopes []string
 
+// Contains returns true if string is found in the the underlying slice structure
+func (a AuthScopes) Contains(elem string) bool {
+	for _, val := range a {
+		if val == elem {
+			return true
+		}
+	}
+	return false
+}
+
 func (a *AuthScopes) String() string {
 	return strings.Join(*a, "+")
 }
@@ -44,9 +52,13 @@ func NewPrivateAuthClient(ctx context.Context, clientID, clientSecret, redirectU
 	if client == nil {
 		client = http.DefaultClient
 	}
-	c := &Client{ClientID: clientID, HTTPClient: client, Config: config}
+	c := &Client{ClientID: clientID,
+		HTTPClient: client,
+		Config:     config,
+		Private:    true,
+		AuthScopes: *as}
 	// get authorization code
-	code, err := c.authGetCode(ctx, clientID, redirectURI, as)
+	code, err := c.authGetCode(ctx, clientID, redirectURI)
 	if err != nil {
 		return nil, err
 	}
@@ -66,12 +78,12 @@ func NewPrivateAuthClient(ctx context.Context, clientID, clientSecret, redirectU
 
 // returns the authorization code used in the subsequent POST request to get access token
 // returns 0 if an error is encountered
-func (c *Client) authGetCode(ctx context.Context, clientID, redirectURI string, as *AuthScopes) (string, error) {
+func (c *Client) authGetCode(ctx context.Context, clientID, redirectURI string) (string, error) {
 	queryParams := QueryParams(map[string]string{
 		"client_id":     clientID,
 		"redirect_uri":  redirectURI,
 		"response_type": "code", // The access response type you are requesting. The authorization workflow Unsplash supports requires the value “code” here.
-		"scope":         as.String(),
+		"scope":         c.AuthScopes.String(),
 	})
 	link, err := buildURL(authCodeEndpoint, queryParams)
 	if err != nil {
@@ -123,21 +135,4 @@ func (c *Client) authGetAccessToken(ctx context.Context, clientID, clientSecret,
 		return nil, err
 	}
 	return &ar, nil
-}
-
-// get a response, by a post request
-func (c *Client) postHTTP(ctx context.Context, link string, postData map[string]string) (*http.Response, error) {
-	data, err := json.Marshal(postData)
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, link, bytes.NewBuffer(data))
-	if err != nil {
-		return nil, err
-	}
-	resp, err := c.HTTPClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }

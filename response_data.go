@@ -245,3 +245,19 @@ type AuthResponse struct {
 	Scope       string `json:"scope"`
 	CreatedAt   int    `json:"created_at"`
 }
+
+// LikeResponse defines the struct returned on liking and unliking photos
+// returns abbreviated versions of the picture and User
+type LikeResponse struct {
+	Photo Photo `json:"photo"`
+	User  User  `json:"user"`
+}
+
+// CollectionActionResponse defines the fields returned on adding a photo to a collection
+// or deleting a photo from a collection.
+type CollectionActionResponse struct {
+	Photo      Photo      `json:"photo"`
+	Collection Collection `json:"collection"`
+	User       User       `json:"user"`
+	CreatedAt  string     `json:"created_at"`
+}
