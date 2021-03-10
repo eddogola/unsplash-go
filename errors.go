@@ -9,7 +9,7 @@ import (
 
 var (
 	errCodeQueryParamNotFound = errors.New("`code` query parameter not found in the request URL")
-	errClientNotPrivate = errors.New("client not private but used for functions that require private authentication")
+	errClientNotPrivate       = errors.New("client not private but used for functions that require private authentication")
 )
 
 type errQueryNotInURL string
