@@ -31,6 +31,7 @@ type Client struct {
 	ClientID   string
 	HTTPClient *http.Client
 	Config     *Config
+	Private    bool // true if private authentication is required to make requests, default should be false
 }
 
 // Config sets up configuration details to be used in making requests.
@@ -50,7 +51,7 @@ func NewClient(clientID string, client *http.Client, config *Config) *Client {
 	config.Headers.Add("Accept-Version", "v1") // Add api version
 	// Unsplash strongly encourages a specific request of the api version
 
-	return &Client{ClientID: clientID, HTTPClient: client, Config: config}
+	return &Client{ClientID: clientID, HTTPClient: client, Config: config, Private: false}
 }
 
 // Client http methods to get data from the API using a context
@@ -532,6 +533,8 @@ func (c *Client) getStatsMonth(ctx context.Context) (*StatsMonth, error) {
 	}
 	return &stats, nil
 }
+
+// private Client methods
 
 // utility functions
 
