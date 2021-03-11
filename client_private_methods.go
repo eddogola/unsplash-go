@@ -16,9 +16,8 @@ func (c *Client) getUserPrivateProfile(ctx context.Context) (*User, error) {
 		return nil, errClientNotPrivate
 	}
 	// check if the `read_user` scope is present in the private Client's scopes
-	scope := "read_user"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(readUserScope); !ok {
+		return nil, errRequiredScopeAbsent(readUserScope)
 	}
 
 	data, err := c.getBodyBytes(ctx, privateUserProfileEndpoint)
@@ -43,9 +42,8 @@ func (c *Client) updateUserProfile(ctx context.Context, updatedData map[string]s
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_user` scope is present in the private Client's scopes
-	scope := "write_user"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writeUserScope); !ok {
+		return nil, errRequiredScopeAbsent(writeUserScope)
 	}
 	// make PUT request
 	// response returns the updated profile
@@ -77,9 +75,8 @@ func (c *Client) updatePhoto(ctx context.Context, ID string, updatedData map[str
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_photo` scope is present in the private Client's scopes
-	scope := "write_photo"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writePhotosScope); !ok {
+		return nil, errRequiredScopeAbsent(writePhotosScope)
 	}
 	// make PUT request
 	// response returns the updated profile
@@ -112,9 +109,8 @@ func (c *Client) likePhoto(ctx context.Context, ID string) (*LikeResponse, error
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_likes` scope is present in the private Client's scopes
-	scope := "write_likes"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writeLikesScope); !ok {
+		return nil, errRequiredScopeAbsent(writeLikesScope)
 	}
 	// make POST request
 	// response returns abbreviated versions of the picture and user
@@ -167,9 +163,8 @@ func (c *Client) createCollection(ctx context.Context, ID string, data map[strin
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	scope := "write_collections"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(writeCollectionsScope)
 	}
 	// make POST request
 	// responds with the new collection
@@ -201,9 +196,8 @@ func (c *Client) updateCollection(ctx context.Context, ID string, data map[strin
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	scope := "write_collections"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(writeCollectionsScope)
 	}
 	// make PUT request
 	// responds with the updated collection
@@ -235,9 +229,8 @@ func (c *Client) deleteCollection(ctx context.Context, ID string) error {
 		return errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	scope := "write_collections"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
+		return errRequiredScopeAbsent(writeCollectionsScope)
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
@@ -262,9 +255,8 @@ func (c *Client) addPhotoToCollection(ctx context.Context, ID string, data map[s
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	scope := "write_collections"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(writeCollectionsScope)
 	}
 	// make POST request
 	// response returns abbreviated versions of the picture and user
@@ -296,9 +288,8 @@ func (c *Client) removePhotoFromCollection(ctx context.Context, ID string, data 
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	scope := "write_collections"
-	if ok := c.AuthScopes.Contains(scope); !ok {
-		return nil, errRequiredScopeAbsent(scope)
+	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(writeCollectionsScope)
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
