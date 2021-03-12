@@ -26,9 +26,11 @@ type UserSearchResult struct {
 	Results    []User `json:"results"`
 }
 
-// get a single page with photo search results
+// SearchPhotos takes in a context and query parameters, returns the search results,
+// in a pointer to a PhotoSearchResult object.
+// Get a single page with photo search results
 // https://unsplash.com/documentation#search-photos
-func (c *Client) searchPhotos(ctx context.Context, queryParams QueryParams) (*PhotoSearchResult, error) {
+func (c *Client) SearchPhotos(ctx context.Context, queryParams QueryParams) (*PhotoSearchResult, error) {
 	link, err := buildURL(SearchPhotosEndpoint, queryParams)
 	if err != nil {
 		return nil, err
@@ -49,9 +51,11 @@ func (c *Client) searchPhotos(ctx context.Context, queryParams QueryParams) (*Ph
 	return &res, nil
 }
 
-// get a single page with collection search results
+// SearchCollections takes in a context and query parameters, returns the search results,
+// in a pointer to a CollectionSearchResult object.
+// Get a single page with collection search results
 // https://unsplash.com/documentation#search-collections
-func (c *Client) searchCollections(ctx context.Context, queryParams QueryParams) (*CollectionSearchResult, error) {
+func (c *Client) SearchCollections(ctx context.Context, queryParams QueryParams) (*CollectionSearchResult, error) {
 	link, err := buildURL(SearchCollectionsEndpoint, queryParams)
 	if err != nil {
 		return nil, err
@@ -72,9 +76,11 @@ func (c *Client) searchCollections(ctx context.Context, queryParams QueryParams)
 	return &res, nil
 }
 
-// get a single page with users search results
+// SearchUsers takes in a context and query parameters, returns the search results,
+// in a pointer to a UserSearchResult object.
+// Get a single page with users search results
 // https://unsplash.com/documentation#search-users
-func (c *Client) searchUsers(ctx context.Context, queryParams QueryParams) (*UserSearchResult, error) {
+func (c *Client) SearchUsers(ctx context.Context, queryParams QueryParams) (*UserSearchResult, error) {
 	link, err := buildURL(SearchUsersEndpoint, queryParams)
 	if err != nil {
 		return nil, err
