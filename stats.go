@@ -59,9 +59,11 @@ type UserStats struct {
 	Views     Stats  `json:"views"`
 }
 
+// GetStatsTotal takes a context, returns total stats in a pointer
+// to a StatsTotal object.
 // Get a list of counts for all of Unsplash.
 // https://unsplash.com/documentation#totals
-func (c *Client) getStatsTotal(ctx context.Context) (*StatsTotal, error) {
+func (c *Client) GetStatsTotal(ctx context.Context) (*StatsTotal, error) {
 	data, err := c.getBodyBytes(ctx, StatsTotalEndpoint)
 	if err != nil {
 		return nil, err
@@ -74,9 +76,11 @@ func (c *Client) getStatsTotal(ctx context.Context) (*StatsTotal, error) {
 	return &stats, nil
 }
 
+// GetStatsMonth takes a context, returns monthly stats in a pointer
+// to a StatsMonth object.
 // Get the overall Unsplash stats for the past 30 days.
 // https://unsplash.com/documentation#month
-func (c *Client) getStatsMonth(ctx context.Context) (*StatsMonth, error) {
+func (c *Client) GetStatsMonth(ctx context.Context) (*StatsMonth, error) {
 	data, err := c.getBodyBytes(ctx, StatsTotalEndpoint)
 	if err != nil {
 		return nil, err
