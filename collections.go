@@ -35,10 +35,12 @@ type CollectionActionResponse struct {
 	CreatedAt  string     `json:"created_at"`
 }
 
-// gets a single page of a list of collections
+// GetCollectionsList takes in a context and query parameters to build the required response
+// and return a slice of Collection objects.
+// Gets a single page of a list of collections
 // https://unsplash.com/documentation#list-collections
-func (c *Client) getCollectionsList(ctx context.Context, queryParams QueryParams) ([]Collection, error) {
-	link, err := buildURL(collectionsListEndpoint, queryParams)
+func (c *Client) GetCollectionsList(ctx context.Context, queryParams QueryParams) ([]Collection, error) {
+	link, err := buildURL(CollectionsListEndpoint, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -54,10 +56,12 @@ func (c *Client) getCollectionsList(ctx context.Context, queryParams QueryParams
 	return collections, nil
 }
 
-// get a collection using id
+// GetCollection takes in a contect and a collection id to return a single *Collection
+// if a collection of the given id is found.
+// Get a collection using id
 // https://unsplash.com/documentation#get-a-collection
-func (c *Client) getCollection(ctx context.Context, id int) (*Collection, error) {
-	endPoint := collectionsListEndpoint + fmt.Sprint(id)
+func (c *Client) GetCollection(ctx context.Context, id int) (*Collection, error) {
+	endPoint := CollectionsListEndpoint + fmt.Sprint(id)
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
 		return nil, err
@@ -70,10 +74,13 @@ func (c *Client) getCollection(ctx context.Context, id int) (*Collection, error)
 	return &collection, nil
 }
 
+// GetCollectionPhotos takes in a context, collection id, and query parameters.
+// If a collection of the given id is found, a slice of Photo objects in the collection
+// is returned.
 // Retrieve a collection's photos
 // https://unsplash.com/documentation#get-a-collections-photos
-func (c *Client) getCollectionPhotos(ctx context.Context, id int, queryParams QueryParams) ([]Photo, error) {
-	endPoint := collectionsListEndpoint + fmt.Sprint(id) + "/photos"
+func (c *Client) GetCollectionPhotos(ctx context.Context, id int, queryParams QueryParams) ([]Photo, error) {
+	endPoint := CollectionsListEndpoint + fmt.Sprint(id) + "/photos"
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
 		return nil, err
@@ -90,10 +97,12 @@ func (c *Client) getCollectionPhotos(ctx context.Context, id int, queryParams Qu
 	return pics, nil
 }
 
+// GetRelatedCollections takes in a context and a collection id to return a slice of Collection
+// objects if the collection of the given id is found.
 // Retrieve a list of collections related to this one.
 // https://unsplash.com/documentation#list-a-collections-related-collections
-func (c *Client) getRelatedCollections(ctx context.Context, id int) ([]Collection, error) {
-	endPoint := collectionsListEndpoint + fmt.Sprint(id) + "/related"
+func (c *Client) GetRelatedCollections(ctx context.Context, id int) ([]Collection, error) {
+	endPoint := CollectionsListEndpoint + fmt.Sprint(id) + "/related"
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
 		return nil, err
