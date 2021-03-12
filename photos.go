@@ -61,10 +61,12 @@ type Tag struct {
 	Title string `json:"title"`
 }
 
-// get a single page with a list of all photos
+// GetPhotoList takes in a context and query parameters to return a list(given page, default first) of all
+// Unsplash photos.
+// Get a single page with a list of all photos
 // https://unsplash.com/documentation#list-photos
-func (c *Client) getPhotoList(ctx context.Context, queryParams QueryParams) ([]Photo, error) {
-	link, err := buildURL(allPhotosEndpoint, queryParams)
+func (c *Client) GetPhotoList(ctx context.Context, queryParams QueryParams) ([]Photo, error) {
+	link, err := buildURL(AllPhotosEndpoint, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -80,10 +82,12 @@ func (c *Client) getPhotoList(ctx context.Context, queryParams QueryParams) ([]P
 	return pics, nil
 }
 
-// get a Photo using photo ID
+// GetPhotoList takes in a context and photo id. If a photo with the given id exists,
+// the Photo is returned.
+// Get a Photo using photo ID
 // https://unsplash.com/documentation#get-a-photo
-func (c *Client) getPhoto(ctx context.Context, ID string) (*Photo, error) {
-	link := allPhotosEndpoint + ID
+func (c *Client) GetPhoto(ctx context.Context, ID string) (*Photo, error) {
+	link := AllPhotosEndpoint + ID
 	data, err := c.getBodyBytes(ctx, link)
 	if err != nil {
 		return nil, err
@@ -96,11 +100,13 @@ func (c *Client) getPhoto(ctx context.Context, ID string) (*Photo, error) {
 	return &pic, nil
 }
 
-// get a random Photo
+// GetRandomPhoto takes in a context and query parameters. If a `count` query parameter is provided,
+// a list of photos is returned, otherwise, a single photo is returned.
+// Get a random Photo
 // return a list of photos if a count query parameter is provided
 // https://unsplash.com/documentation#get-a-random-photo
-func (c *Client) getRandomPhoto(ctx context.Context, queryParams QueryParams) (interface{}, error) {
-	link, err := buildURL(randomPhotoEndpoint, queryParams)
+func (c *Client) GetRandomPhoto(ctx context.Context, queryParams QueryParams) (interface{}, error) {
+	link, err := buildURL(RandomPhotoEndpoint, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -133,11 +139,13 @@ func (c *Client) getRandomPhoto(ctx context.Context, queryParams QueryParams) (i
 	return &pic, nil
 }
 
+// GetPhotoStats takes in a context, photo id and query parameters. If photo with given id is found,
+// the photo stats are returned in a pointer to a PhotoStats object.
 // Retrieve total number of downloads, views and likes of a single photo, as well as the historical
 // breakdown of these stats in a specific timeframe (default is 30 days).
 // https://unsplash.com/documentation#get-a-photos-statistics
-func (c *Client) getPhotoStats(ctx context.Context, ID string, queryParams QueryParams) (*PhotoStats, error) {
-	endPoint := allPhotosEndpoint + ID + "/statistics"
+func (c *Client) GetPhotoStats(ctx context.Context, ID string, queryParams QueryParams) (*PhotoStats, error) {
+	endPoint := AllPhotosEndpoint + ID + "/statistics"
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
 		return nil, err
