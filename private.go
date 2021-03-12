@@ -16,11 +16,11 @@ func (c *Client) GetUserPrivateProfile(ctx context.Context) (*User, error) {
 		return nil, errClientNotPrivate
 	}
 	// check if the `read_user` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(readUserScope); !ok {
-		return nil, errRequiredScopeAbsent(readUserScope)
+	if ok := c.AuthScopes.Contains(ReadUserScope); !ok {
+		return nil, errRequiredScopeAbsent(ReadUserScope)
 	}
 
-	data, err := c.getBodyBytes(ctx, privateUserProfileEndpoint)
+	data, err := c.getBodyBytes(ctx, PrivateUserProfileEndpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -42,12 +42,12 @@ func (c *Client) UpdateUserProfile(ctx context.Context, updatedData map[string]s
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_user` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writeUserScope); !ok {
-		return nil, errRequiredScopeAbsent(writeUserScope)
+	if ok := c.AuthScopes.Contains(WriteUserScope); !ok {
+		return nil, errRequiredScopeAbsent(WriteUserScope)
 	}
 	// make PUT request
 	// response returns the updated profile
-	resp, err := c.putHTTP(ctx, privateUserProfileEndpoint, updatedData)
+	resp, err := c.putHTTP(ctx, PrivateUserProfileEndpoint, updatedData)
 	if err != nil {
 		return nil, err
 	}
@@ -75,12 +75,12 @@ func (c *Client) UpdatePhoto(ctx context.Context, ID string, updatedData map[str
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_photo` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writePhotosScope); !ok {
-		return nil, errRequiredScopeAbsent(writePhotosScope)
+	if ok := c.AuthScopes.Contains(WritePhotosScope); !ok {
+		return nil, errRequiredScopeAbsent(WritePhotosScope)
 	}
 	// make PUT request
 	// response returns the updated profile
-	endPoint := allPhotosEndpoint + ID
+	endPoint := AllPhotosEndpoint + ID
 	resp, err := c.putHTTP(ctx, endPoint, updatedData)
 	if err != nil {
 		return nil, err
@@ -109,12 +109,12 @@ func (c *Client) LikePhoto(ctx context.Context, ID string) (*LikeResponse, error
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_likes` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writeLikesScope); !ok {
-		return nil, errRequiredScopeAbsent(writeLikesScope)
+	if ok := c.AuthScopes.Contains(WriteLikesScope); !ok {
+		return nil, errRequiredScopeAbsent(WriteLikesScope)
 	}
 	// make POST request
 	// response returns abbreviated versions of the picture and user
-	endPoint := allPhotosEndpoint + ID + "/like"
+	endPoint := AllPhotosEndpoint + ID + "/like"
 	resp, err := c.postHTTP(ctx, endPoint, nil)
 	if err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func (c *Client) UnlikePhoto(ctx context.Context, ID string) error {
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
-	endPoint := allPhotosEndpoint + ID + "/like"
+	endPoint := AllPhotosEndpoint + ID + "/like"
 	resp, err := c.deleteHTTP(ctx, endPoint, nil)
 	if err != nil {
 		return err
@@ -163,12 +163,12 @@ func (c *Client) CreateCollection(ctx context.Context, ID string, data map[strin
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(writeCollectionsScope)
+	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make POST request
 	// responds with the new collection
-	resp, err := c.postHTTP(ctx, collectionsListEndpoint, data)
+	resp, err := c.postHTTP(ctx, CollectionsListEndpoint, data)
 	if err != nil {
 		return nil, err
 	}
@@ -196,12 +196,12 @@ func (c *Client) UpdateCollection(ctx context.Context, ID string, data map[strin
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(writeCollectionsScope)
+	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make PUT request
 	// responds with the updated collection
-	endPoint := collectionsListEndpoint + ID
+	endPoint := CollectionsListEndpoint + ID
 	resp, err := c.putHTTP(ctx, endPoint, data)
 	if err != nil {
 		return nil, err
@@ -229,12 +229,12 @@ func (c *Client) DeleteCollection(ctx context.Context, ID string) error {
 		return errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
-		return errRequiredScopeAbsent(writeCollectionsScope)
+	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
+		return errRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
-	endPoint := collectionsListEndpoint + ID
+	endPoint := CollectionsListEndpoint + ID
 	resp, err := c.deleteHTTP(ctx, endPoint, nil)
 	if err != nil {
 		return err
@@ -255,12 +255,12 @@ func (c *Client) AddPhotoToCollection(ctx context.Context, ID string, data map[s
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(writeCollectionsScope)
+	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make POST request
 	// response returns abbreviated versions of the picture and user
-	endPoint := collectionsListEndpoint + ID + "/add"
+	endPoint := CollectionsListEndpoint + ID + "/add"
 	resp, err := c.postHTTP(ctx, endPoint, data)
 	if err != nil {
 		return nil, err
@@ -288,12 +288,12 @@ func (c *Client) RemovePhotoFromCollection(ctx context.Context, ID string, data 
 		return nil, errClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
-	if ok := c.AuthScopes.Contains(writeCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(writeCollectionsScope)
+	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
+		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
-	endPoint := collectionsListEndpoint + ID + "/remove"
+	endPoint := CollectionsListEndpoint + ID + "/remove"
 	resp, err := c.deleteHTTP(ctx, endPoint, data)
 	if err != nil {
 		return nil, err
