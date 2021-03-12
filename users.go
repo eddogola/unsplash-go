@@ -54,10 +54,12 @@ type LikeResponse struct {
 	User  User  `json:"user"`
 }
 
-// GetUserPublicProfile retrieves public details on a given user.
+// GetUserPublicProfile takes in a context and username. Returns a pointer to a User,
+// if user with provided username is found.
+// Retrieves public details on a given user.
 // https://unsplash.com/documentation#get-a-users-public-profile
 func (c *Client) GetUserPublicProfile(ctx context.Context, username string) (*User, error) {
-	endPoint := baseUserEndpoint + username
+	endPoint := BaseUserEndpoint + username
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
 		return nil, err
@@ -70,10 +72,11 @@ func (c *Client) GetUserPublicProfile(ctx context.Context, username string) (*Us
 	return &user, nil
 }
 
-// GetUserPortfolioLink retrieves a single user’s portfolio link.
+// GetUserPortfolioLink takes in a context and username, returns the user's portfolio link.
+// Retrieves a single user’s portfolio link.
 // https://unsplash.com/documentation#get-a-users-portfolio-link
 func (c *Client) GetUserPortfolioLink(ctx context.Context, username string) (string, error) {
-	endPoint := baseUserEndpoint + username + "/portfolio"
+	endPoint := BaseUserEndpoint + username + "/portfolio"
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
 		return "", err
@@ -90,10 +93,12 @@ func (c *Client) GetUserPortfolioLink(ctx context.Context, username string) (str
 	return resp.Link, nil
 }
 
-// GetUserPhotos gets a list of photos uploaded by a user.
+// GetUserPhotos takes a context, user's username, and query parameters. Returns a slice of
+// Photo objects uploaded by the user, if user with provided username is found.
+// Gets a list of photos uploaded by a user.
 // https://unsplash.com/documentation#list-a-users-photos
 func (c *Client) GetUserPhotos(ctx context.Context, username string, queryParams QueryParams) ([]Photo, error) {
-	endPoint := baseUserEndpoint + username
+	endPoint := BaseUserEndpoint + username
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
 		return nil, err
@@ -110,10 +115,12 @@ func (c *Client) GetUserPhotos(ctx context.Context, username string, queryParams
 	return pics, nil
 }
 
-// GetUserLikedPhotos gets a list of photos liked by a user.
+// GetUserLikedPhotos takes a context, user's username, and query parameters. Returns a slice of
+// Photo objects liked by the user, if user with provided username is found.
+// Gets a list of photos liked by a user.
 // https://unsplash.com/documentation#list-a-users-liked-photos
 func (c *Client) GetUserLikedPhotos(ctx context.Context, username string, queryParams QueryParams) ([]Photo, error) {
-	endPoint := baseUserEndpoint + username + "/likes"
+	endPoint := BaseUserEndpoint + username + "/likes"
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
 		return nil, err
@@ -130,10 +137,12 @@ func (c *Client) GetUserLikedPhotos(ctx context.Context, username string, queryP
 	return pics, nil
 }
 
-// GetUserCollections gets a list of collections created by the user.
+// GetUserCollections takes a context, user's username, and query parameters. Returns a slice of
+// Collection objects if user with provided username is found.
+// Gets a list of collections created by the user.
 // https://unsplash.com/documentation#list-a-users-collections
 func (c *Client) GetUserCollections(ctx context.Context, username string, queryParams QueryParams) ([]Collection, error) {
-	endPoint := baseUserEndpoint + username + "/collections"
+	endPoint := BaseUserEndpoint + username + "/collections"
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
 		return nil, err
@@ -150,11 +159,13 @@ func (c *Client) GetUserCollections(ctx context.Context, username string, queryP
 	return collections, nil
 }
 
-// GetUserStats retrieves the consolidated number of downloads, views and likes of all user’s photos,
+// GetUserStats takes a context, user's username, and query parameters. Returns user's stats if user with provided
+// username is found.
+// Retrieves the consolidated number of downloads, views and likes of all user’s photos,
 // as well as the historical breakdown and average of these stats in a specific timeframe (default is 30 days).
 // https://unsplash.com/documentation#get-a-users-statistics
 func (c *Client) GetUserStats(ctx context.Context, username string, queryParams QueryParams) (*UserStats, error) {
-	endPoint := baseUserEndpoint + username + "/statistics"
+	endPoint := BaseUserEndpoint + username + "/statistics"
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
 		return nil, err
