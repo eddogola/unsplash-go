@@ -29,7 +29,7 @@ type UserSearchResult struct {
 // get a single page with photo search results
 // https://unsplash.com/documentation#search-photos
 func (c *Client) searchPhotos(ctx context.Context, queryParams QueryParams) (*PhotoSearchResult, error) {
-	link, err := buildURL(searchPhotosEndpoint, queryParams)
+	link, err := buildURL(SearchPhotosEndpoint, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (c *Client) searchPhotos(ctx context.Context, queryParams QueryParams) (*Ph
 // get a single page with collection search results
 // https://unsplash.com/documentation#search-collections
 func (c *Client) searchCollections(ctx context.Context, queryParams QueryParams) (*CollectionSearchResult, error) {
-	link, err := buildURL(searchCollectionsEndpoint, queryParams)
+	link, err := buildURL(SearchCollectionsEndpoint, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (c *Client) searchCollections(ctx context.Context, queryParams QueryParams)
 // get a single page with users search results
 // https://unsplash.com/documentation#search-users
 func (c *Client) searchUsers(ctx context.Context, queryParams QueryParams) (*UserSearchResult, error) {
-	link, err := buildURL(searchUsersEndpoint, queryParams)
+	link, err := buildURL(SearchUsersEndpoint, queryParams)
 	if err != nil {
 		return nil, err
 	}
