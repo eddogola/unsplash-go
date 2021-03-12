@@ -8,9 +8,9 @@ import (
 // private Client methods
 // Note: Without a Bearer token (i.e. using a Client-ID token) these requests will return a 401 Unauthorized response.
 
-// Get the user’s private profile
+// GetUserPrivateProfile gets the user’s private profile
 // Note: To access a user’s private data, the user is required to authorize the read_user scope.
-func (c *Client) getUserPrivateProfile(ctx context.Context) (*User, error) {
+func (c *Client) GetUserPrivateProfile(ctx context.Context) (*User, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -33,10 +33,10 @@ func (c *Client) getUserPrivateProfile(ctx context.Context) (*User, error) {
 	return &usr, nil
 }
 
-// Update the current user’s profile
+// UpdateUserProfile updates the current user’s profile
 // https://unsplash.com/documentation#update-the-current-users-profile
 // Note: This action requires the write_user scope. Without it, it will return a 403 Forbidden response.
-func (c *Client) updateUserProfile(ctx context.Context, updatedData map[string]string) (*User, error) {
+func (c *Client) UpdateUserProfile(ctx context.Context, updatedData map[string]string) (*User, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -66,10 +66,10 @@ func (c *Client) updateUserProfile(ctx context.Context, updatedData map[string]s
 	return &usr, nil
 }
 
-// Update a photo on behalf of the logged-in user
+// UpdatePhoto updates a photo on behalf of the logged-in user
 // This requires the `write_photos` scope
 // https://unsplash.com/documentation#update-a-photo
-func (c *Client) updatePhoto(ctx context.Context, ID string, updatedData map[string]string) (*Photo, error) {
+func (c *Client) UpdatePhoto(ctx context.Context, ID string, updatedData map[string]string) (*Photo, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -100,10 +100,10 @@ func (c *Client) updatePhoto(ctx context.Context, ID string, updatedData map[str
 	return &pic, nil
 }
 
-// Like a photo on behalf of the logged-in user
+// LikePhoto likes a photo on behalf of the logged-in user
 // This requires the `write_likes` scope
 // https://unsplash.com/documentation#like-a-photo
-func (c *Client) likePhoto(ctx context.Context, ID string) (*LikeResponse, error) {
+func (c *Client) LikePhoto(ctx context.Context, ID string) (*LikeResponse, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -134,9 +134,9 @@ func (c *Client) likePhoto(ctx context.Context, ID string) (*LikeResponse, error
 	return &lr, nil
 }
 
-// Remove the logged-in user’s like of a photo.
+// UnlikePhoto removes the logged-in user’s like of a photo.
 // https://unsplash.com/documentation#unlike-a-photo
-func (c *Client) unlikePhoto(ctx context.Context, ID string) error {
+func (c *Client) UnlikePhoto(ctx context.Context, ID string) error {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return errClientNotPrivate
@@ -155,9 +155,9 @@ func (c *Client) unlikePhoto(ctx context.Context, ID string) error {
 	return nil
 }
 
-// Create a new collection. This requires the `write_collections` scope.
+// CreateCollection creates a new collection. This requires the `write_collections` scope.
 // https://unsplash.com/documentation#create-a-new-collection
-func (c *Client) createCollection(ctx context.Context, ID string, data map[string]string) (*Collection, error) {
+func (c *Client) CreateCollection(ctx context.Context, ID string, data map[string]string) (*Collection, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -187,10 +187,10 @@ func (c *Client) createCollection(ctx context.Context, ID string, data map[strin
 	return &collection, nil
 }
 
-// Update an existing collection belonging to the logged-in user. This requires the `write_collections` scope.
+// UpdateCollection updates an existing collection belonging to the logged-in user. This requires the `write_collections` scope.
 // https://unsplash.com/documentation#update-an-existing-collection
 // check if client is private to do private requests
-func (c *Client) updateCollection(ctx context.Context, ID string, data map[string]string) (*Collection, error) {
+func (c *Client) UpdateCollection(ctx context.Context, ID string, data map[string]string) (*Collection, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -221,9 +221,9 @@ func (c *Client) updateCollection(ctx context.Context, ID string, data map[strin
 	return &collection, nil
 }
 
-// Delete a collection belonging to the logged-in user. This requires the `write_collections` scope.
+// DeleteCollection deletes a collection belonging to the logged-in user. This requires the `write_collections` scope.
 // https://unsplash.com/documentation#delete-a-collection
-func (c *Client) deleteCollection(ctx context.Context, ID string) error {
+func (c *Client) DeleteCollection(ctx context.Context, ID string) error {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return errClientNotPrivate
@@ -247,9 +247,9 @@ func (c *Client) deleteCollection(ctx context.Context, ID string) error {
 	return nil
 }
 
-// Add a photo to one of the logged-in user’s collections. Requires the `write_collections` scope.
+// AddPhotoToCollection adds a photo to one of the logged-in user’s collections. Requires the `write_collections` scope.
 // https://unsplash.com/documentation#add-a-photo-to-a-collection
-func (c *Client) addPhotoToCollection(ctx context.Context, ID string, data map[string]string) (*CollectionActionResponse, error) {
+func (c *Client) AddPhotoToCollection(ctx context.Context, ID string, data map[string]string) (*CollectionActionResponse, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -280,9 +280,9 @@ func (c *Client) addPhotoToCollection(ctx context.Context, ID string, data map[s
 	return &car, nil
 }
 
-// Remove a photo from one of the logged-in user’s collections. Requires the `write_collections` scope.
+// RemovePhotoFromCollection removes a photo from one of the logged-in user’s collections. Requires the `write_collections` scope.
 // https://unsplash.com/documentation#remove-a-photo-from-a-collection
-func (c *Client) removePhotoFromCollection(ctx context.Context, ID string, data map[string]string) (*CollectionActionResponse, error) {
+func (c *Client) RemovePhotoFromCollection(ctx context.Context, ID string, data map[string]string) (*CollectionActionResponse, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate

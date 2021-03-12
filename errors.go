@@ -7,6 +7,12 @@ import (
 	"net/http"
 )
 
+// Errors defines the structure Unsplash responds with when an error
+// is encountered while using their API.
+type Errors struct {
+	ErrorList []string `json:"errors"`
+}
+
 var (
 	errCodeQueryParamNotFound = errors.New("`code` query parameter not found in the request URL")
 	errClientNotPrivate       = errors.New("client not private but used for functions that require private authentication")
