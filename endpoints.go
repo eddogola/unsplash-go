@@ -1,22 +1,22 @@
 package unsplash
 
 const (
-	baseEndpoint               = "https://api.unsplash.com/"
-	baseUserEndpoint           = baseEndpoint + "users/"
-	privateUserProfileEndpoint = baseEndpoint + "me"
-	randomPhotoEndpoint        = baseEndpoint + "photos/random/"
-	allPhotosEndpoint          = baseEndpoint + "photos/"
-	searchPhotosEndpoint       = baseEndpoint + "search/photos"
-	searchCollectionsEndpoint  = baseEndpoint + "search/collections"
-	searchUsersEndpoint        = baseEndpoint + "search/users"
-	topicsListEndpoint         = baseEndpoint + "topics/"
-	collectionsListEndpoint    = baseEndpoint + "collections/"
-	statsTotalEndpoint         = baseEndpoint + "stats/total"
-	statsMonthEndpoint         = baseEndpoint + "stats/month"
+	BaseEndpoint               = "https://api.unsplash.com/"
+	BaseUserEndpoint           = BaseEndpoint + "users/"
+	PrivateUserProfileEndpoint = BaseEndpoint + "me"
+	RandomPhotoEndpoint        = BaseEndpoint + "photos/random/"
+	AllPhotosEndpoint          = BaseEndpoint + "photos/"
+	SearchPhotosEndpoint       = BaseEndpoint + "search/photos"
+	SearchCollectionsEndpoint  = BaseEndpoint + "search/collections"
+	SearchUsersEndpoint        = BaseEndpoint + "search/users"
+	TopicsListEndpoint         = BaseEndpoint + "topics/"
+	CollectionsListEndpoint    = BaseEndpoint + "collections/"
+	StatsTotalEndpoint         = BaseEndpoint + "stats/total"
+	StatsMonthEndpoint         = BaseEndpoint + "stats/month"
 )
 
 // Private authorization endpoints
 const (
-	authCodeEndpoint  = "https://unsplash.com/oauth/authorize"
-	authTokenEndpoint = "https://unsplash.com/oauth/token"
+	AuthCodeEndpoint  = "https://unsplash.com/oauth/authorize"
+	AuthTokenEndpoint = "https://unsplash.com/oauth/token"
 )
