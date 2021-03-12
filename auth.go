@@ -72,7 +72,7 @@ func (c *Client) authGetCode(ctx context.Context, clientID, redirectURI string) 
 		"response_type": "code", // The access response type you are requesting. The authorization workflow Unsplash supports requires the value “code” here.
 		"scope":         c.AuthScopes.String(),
 	})
-	link, err := buildURL(authCodeEndpoint, queryParams)
+	link, err := buildURL(AuthCodeEndpoint, queryParams)
 	if err != nil {
 		return "", err
 	}
@@ -105,7 +105,7 @@ func (c *Client) authGetAccessToken(ctx context.Context, clientID, clientSecret,
 		"code":          code,
 		"grant_type":    "authorization_code",
 	}
-	resp, err := c.postHTTP(ctx, authTokenEndpoint, postData)
+	resp, err := c.postHTTP(ctx, AuthTokenEndpoint, postData)
 	if err != nil {
 		return nil, err
 	}
