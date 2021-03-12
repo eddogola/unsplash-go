@@ -62,7 +62,7 @@ type UserStats struct {
 // Get a list of counts for all of Unsplash.
 // https://unsplash.com/documentation#totals
 func (c *Client) getStatsTotal(ctx context.Context) (*StatsTotal, error) {
-	data, err := c.getBodyBytes(ctx, statsTotalEndpoint)
+	data, err := c.getBodyBytes(ctx, StatsTotalEndpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (c *Client) getStatsTotal(ctx context.Context) (*StatsTotal, error) {
 // Get the overall Unsplash stats for the past 30 days.
 // https://unsplash.com/documentation#month
 func (c *Client) getStatsMonth(ctx context.Context) (*StatsMonth, error) {
-	data, err := c.getBodyBytes(ctx, statsTotalEndpoint)
+	data, err := c.getBodyBytes(ctx, StatsTotalEndpoint)
 	if err != nil {
 		return nil, err
 	}
