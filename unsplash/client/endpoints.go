@@ -1,4 +1,4 @@
-package unsplash
+package client
 
 const (
 	BaseEndpoint               = "https://api.unsplash.com/"

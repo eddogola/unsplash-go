@@ -1,6 +1,9 @@
-package unsplash
+package client
 
-import "context"
+import (
+	"context"
+	"net/url"
+)
 
 // User defines public & private fields Unsplash provides on a user
 type User struct {
@@ -75,11 +78,11 @@ func (c *Client) GetUserPublicProfile(ctx context.Context, username string) (*Us
 // GetUserPortfolioLink takes in a context and username, returns the user's portfolio link.
 // Retrieves a single user’s portfolio link.
 // https://unsplash.com/documentation#get-a-users-portfolio-link
-func (c *Client) GetUserPortfolioLink(ctx context.Context, username string) (string, error) {
+func (c *Client) GetUserPortfolioLink(ctx context.Context, username string) (*url.URL, error) {
 	endPoint := BaseUserEndpoint + username + "/portfolio"
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
-		return "", err
+		return &url.URL{}, err
 	}
 
 	// parse json response data using local struct since it has only onee field
@@ -88,9 +91,13 @@ func (c *Client) GetUserPortfolioLink(ctx context.Context, username string) (str
 	}
 	err = parseJSON(data, &resp)
 	if err != nil {
-		return "", err
+		return &url.URL{}, err
 	}
-	return resp.Link, nil
+	URL, err := url.Parse(resp.Link)
+	if err != nil {
+		return &url.URL{}, err
+	}
+	return URL, nil
 }
 
 // GetUserPhotos takes a context, user's username, and query parameters. Returns a slice of
