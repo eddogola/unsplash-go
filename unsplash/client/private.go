@@ -1,4 +1,4 @@
-package unsplash
+package client
 
 import (
 	"context"
@@ -71,7 +71,7 @@ func (c *Client) UpdateUserProfile(ctx context.Context, updatedData map[string]s
 // UpdatePhoto takes in a context, photo id and data with which to update photo. Returns the updated Photo.
 // Updates a photo on behalf of the logged-in user. This requires the `write_photos` scope.
 // https://unsplash.com/documentation#update-a-photo
-func (c *Client) UpdatePhoto(ctx context.Context, collectionID string, updatedData map[string]string) (*Photo, error) {
+func (c *Client) UpdatePhoto(ctx context.Context, photoID string, updatedData map[string]string) (*Photo, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -81,7 +81,7 @@ func (c *Client) UpdatePhoto(ctx context.Context, collectionID string, updatedDa
 		return nil, errRequiredScopeAbsent(WritePhotosScope)
 	}
 	// make PUT request
-	endPoint := AllPhotosEndpoint + collectionID
+	endPoint := AllPhotosEndpoint + photoID
 	resp, err := c.putHTTP(ctx, endPoint, updatedData)
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (c *Client) UpdatePhoto(ctx context.Context, collectionID string, updatedDa
 // LikePhoto takes in a context and photo id, returns abbreviated versions of the picture and user.
 // Likes a photo on behalf of the logged-in user. This requires the `write_likes` scope.
 // https://unsplash.com/documentation#like-a-photo
-func (c *Client) LikePhoto(ctx context.Context, collectionID string) (*LikeResponse, error) {
+func (c *Client) LikePhoto(ctx context.Context, photoID string) (*LikeResponse, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return nil, errClientNotPrivate
@@ -114,7 +114,7 @@ func (c *Client) LikePhoto(ctx context.Context, collectionID string) (*LikeRespo
 		return nil, errRequiredScopeAbsent(WriteLikesScope)
 	}
 	// make POST request
-	endPoint := AllPhotosEndpoint + collectionID + "/like"
+	endPoint := AllPhotosEndpoint + photoID + "/like"
 	resp, err := c.postHTTP(ctx, endPoint, nil)
 	if err != nil {
 		return nil, err
@@ -138,14 +138,14 @@ func (c *Client) LikePhoto(ctx context.Context, collectionID string) (*LikeRespo
 // deleting like from Photo, nil otherwise.
 // Removes the logged-in user’s like of a photo.
 // https://unsplash.com/documentation#unlike-a-photo
-func (c *Client) UnlikePhoto(ctx context.Context, collectionID string) error {
+func (c *Client) UnlikePhoto(ctx context.Context, photoID string) error {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
 		return errClientNotPrivate
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
-	endPoint := AllPhotosEndpoint + collectionID + "/like"
+	endPoint := AllPhotosEndpoint + photoID + "/like"
 	resp, err := c.deleteHTTP(ctx, endPoint, nil)
 	if err != nil {
 		return err
