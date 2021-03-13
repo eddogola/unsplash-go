@@ -1,4 +1,4 @@
-package unsplash
+package client
 
 // Permissions scopes
 // To write data on behalf of a user or to access their private data,

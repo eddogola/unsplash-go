@@ -1,4 +1,4 @@
-package unsplash
+package utils
 
 /*
 Every image returned by the Unsplash API is a dynamic image URL, which means that it can be manipulated to create 
@@ -10,7 +10,11 @@ API calls.
 Under the hood, Unsplash uses Imgix, a powerful image manipulation service to provide dynamic image URLs.
 */
 
-import "fmt"
+import (
+	"fmt"
+	
+	"github.com/eddogola/unsplash-go/unsplash/client"
+)
 
 // ResizeOptions defines parameters that resize a photo
 // Resizing is done using Imgix()
@@ -60,6 +64,6 @@ func (rOptions ResizeOptions) String() string {
 
 // Resize takes a ResizeOptions object, dynamically resizes Photo.URLs.Raw using the options
 // and returns the resulting URL
-func (pic *Photo) Resize(rOptions ResizeOptions) string {
+func GetResizedPhotoURL(pic *client.Photo, rOptions ResizeOptions) string {
 	return pic.URLs.Raw + rOptions.String()
 }

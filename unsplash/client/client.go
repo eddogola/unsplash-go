@@ -1,4 +1,4 @@
-package unsplash
+package client
 
 import (
 	"bytes"
