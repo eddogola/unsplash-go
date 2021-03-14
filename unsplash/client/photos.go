@@ -124,7 +124,7 @@ func (c *Client) GetRandomPhoto(ctx context.Context, queryParams QueryParams) (i
 	*/
 	if _, ok := queryParams["count"]; ok {
 		var pics []Photo
-		err = parseJSON(data, pics)
+		err = parseJSON(data, &pics)
 		if err != nil {
 			return nil, err
 		}
@@ -132,7 +132,7 @@ func (c *Client) GetRandomPhoto(ctx context.Context, queryParams QueryParams) (i
 	}
 
 	var pic Photo
-	err = parseJSON(data, pic)
+	err = parseJSON(data, &pic)
 	if err != nil {
 		return nil, err
 	}
