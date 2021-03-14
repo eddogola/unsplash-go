@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -38,6 +39,7 @@ func NewClient(clientID string, client *http.Client, config *Config) *Client {
 	}
 	config.Headers.Add("Accept-Version", "v1") // Add api version
 	// Unsplash strongly encourages a specific request of the api version
+	config.Headers.Add("Authorization", fmt.Sprintf("Client-ID %s", clientID))
 
 	return &Client{ClientID: clientID, HTTPClient: client, Config: config, Private: false}
 }

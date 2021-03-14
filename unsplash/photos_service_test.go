@@ -10,7 +10,8 @@ import (
 func TestPhotosService(t *testing.T) {
 
 	t.Run("random photo", func(t *testing.T) {
-		unsplash := NewUnsplash(client.NewClient("client_id", nil, &client.Config{}))
+		cl := client.NewClient("client_id", nil, client.NewConfig())
+		unsplash := New(cl)
 		random_photo, err := unsplash.Photos.GetRandom(context.Background(), nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, random_photo)
