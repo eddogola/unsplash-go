@@ -9,12 +9,25 @@ import (
 
 func TestPhotosService(t *testing.T) {
 
-	t.Run("random photo", func(t *testing.T) {
-		cl := client.NewClient("client_id", nil, client.NewConfig())
+	t.Run("random photo when count not passed", func(t *testing.T) {
+		cl := client.NewClient("-jLuawEhNTrJByNkD-scww7cz0u-fC4W8DjMOXyKAEY", nil, client.NewConfig())
 		unsplash := New(cl)
-		random_photo, err := unsplash.Photos.GetRandom(context.Background(), nil)
+		res, err := unsplash.Photos.GetRandom(context.Background(), nil)
+		random_photo := res.(*client.Photo)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, random_photo)
+	})
+
+	t.Run("random photo when count passed", func(t *testing.T) {
+		cl := client.NewClient("-jLuawEhNTrJByNkD-scww7cz0u-fC4W8DjMOXyKAEY", nil, client.NewConfig())
+		unsplash := New(cl)
+		qParams :=  client.QueryParams(map[string]string{
+			"count": "1",
+		})
+		res, err := unsplash.Photos.GetRandom(context.Background(), qParams)
+		random_photos := res.([]client.Photo)
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, random_photos)
 	})
 }
 

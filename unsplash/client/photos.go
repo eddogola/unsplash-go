@@ -128,7 +128,7 @@ func (c *Client) GetRandomPhoto(ctx context.Context, queryParams QueryParams) (i
 		if err != nil {
 			return nil, err
 		}
-		return &pics, nil
+		return pics, nil
 	}
 
 	var pic Photo
