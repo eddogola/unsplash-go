@@ -1,0 +1,9 @@
+language: go
+
+go:
+ - tip
+
+scripts:
+ - cd unsplash
+ - go test -race -v .
+ - go vet .
