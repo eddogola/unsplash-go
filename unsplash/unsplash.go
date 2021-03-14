@@ -12,7 +12,7 @@ type Unsplash struct {
 	client      *client.Client
 }
 
-func NewUnsplash(c *client.Client) *Unsplash {
+func New(c *client.Client) *Unsplash {
 	unsplash := &Unsplash{client: c}
 	unsplash.Users = &UsersService{client: unsplash.client}
 	unsplash.Photos = &PhotosService{client: unsplash.client}
