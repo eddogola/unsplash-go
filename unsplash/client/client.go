@@ -24,8 +24,6 @@ type Client struct {
 // It contains headers that will be used in all client requests.
 type Config struct {
 	Headers      http.Header
-	AuthInHeader bool // if true, Client-ID YOUR_ACCESS_KEY is added to the request Authentication header
-	// if false, client_id is passed as a query parameter to the url being requested
 }
 
 // NewClient initializes a new Client.
