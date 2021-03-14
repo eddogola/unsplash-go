@@ -23,7 +23,11 @@ type Client struct {
 // Config sets up configuration details to be used in making requests.
 // It contains headers that will be used in all client requests.
 type Config struct {
-	Headers      http.Header
+	Headers http.Header
+}
+
+func NewConfig() *Config {
+	return &Config{make(http.Header)}
 }
 
 // NewClient initializes a new Client.
