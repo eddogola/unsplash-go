@@ -2,6 +2,10 @@
 
 A simple wrapper around the unsplash API.
 
+## Authentication
+
+Client ID passed in Authorization headers by default, not query parameters.
+
 ## Potential areas of improvement
 
 pagination not yet implemented.
@@ -14,26 +18,28 @@ import (
  "context"
 "fmt"
 "net/http"
+
+"github.com/eddogola/unsplash-go/unsplash"
+"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
 // an example of getting photos in the subsequent pages
 func getPics() {
+// library initialization
 clientID := "<YOUR-CLIENT-ID>"
-qParams := QueryParams(map[string]string{
-"order_by": "latest",
+cl := client.NewClient(clientID, http.DefaultClient, NewConfig())
+unsplash := unsplash.New(cl)
+
+// query parameters to be passed to the request
+qParams := client.QueryParams(map[string]string{
+    "order_by": "latest",
 })
-c := NewClient(clientID, http.DefaultClient, &Config{AuthInHeader: true, LowContentSafety: false})
-if c.Config.AuthInHeader {
-    c.Config.Headers.Add("Authorization", fmt.Sprintf("Client-ID %s", clientID))
-} else {
-    qParams["client_id"] = clientID
-}
-// how I'd want it to be.
+
 var photos []Photo
 // get the first five pages
 for i := 0; i <= 5; i++ {
     qParams["page"] = fmt.Sprint(i)
-    pics, _ := c.GetPhotoList(context.Background(), qParams)
+    pics, err := cl.GetPhotoList(context.Background(), qParams)
     photos = append(photos, pics...)
 }
 }
