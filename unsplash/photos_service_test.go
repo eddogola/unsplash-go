@@ -4,30 +4,38 @@ import (
 	"context"
 	"testing"
 
+	"github.com/eddogola/readenv"
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
 func TestPhotosService(t *testing.T) {
 
 	t.Run("random photo when count not passed", func(t *testing.T) {
-		cl := client.NewClient("-jLuawEhNTrJByNkD-scww7cz0u-fC4W8DjMOXyKAEY", nil, client.NewConfig())
+		envData, err := readenv.File("../.env")
+		checkErrorIsNil(t, err)
+		clientID, err := envData.Get("CLIENT_ID")
+		checkErrorIsNil(t, err)
+		cl := client.NewClient(clientID, nil, client.NewConfig())
 		unsplash := New(cl)
 		res, err := unsplash.Photos.GetRandom(context.Background(), nil)
-		random_photo := res.(*client.Photo)
+		randomPhoto := res.(*client.Photo)
 		checkErrorIsNil(t, err)
-		checkRsNotNil(t, random_photo)
+		checkRsNotNil(t, randomPhoto)
 	})
 
 	t.Run("random photo when count passed", func(t *testing.T) {
-		cl := client.NewClient("-jLuawEhNTrJByNkD-scww7cz0u-fC4W8DjMOXyKAEY", nil, client.NewConfig())
+		envData, err := readenv.File("../.env")
+		if err != nil {
+			checkErrorIsNil(t, err)
+		}
+		clientID, err := envData.Get("CLIENT_ID")
+		cl := client.NewClient(clientID, nil, client.NewConfig())
 		unsplash := New(cl)
-		qParams :=  client.QueryParams(map[string]string{
-			"count": "1",
-		})
-		res, err := unsplash.Photos.GetRandom(context.Background(), qParams)
-		random_photos := res.([]client.Photo)
+
+		res, err := unsplash.Photos.GetRandom(context.Background(), client.QueryParams{"count":"1"})
+		randomPhotos := res.([]client.Photo)
 		checkErrorIsNil(t, err)
-		checkRsNotNil(t, random_photos)
+		checkRsNotNil(t, randomPhotos)
 	})
 }
 
