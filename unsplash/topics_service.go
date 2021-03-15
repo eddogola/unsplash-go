@@ -6,18 +6,24 @@ import (
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
+// TopicsService contains an underlying Unsplash client to
+//be used for http methods
 type TopicsService struct {
 	client *client.Client
 }
 
+// All returns a paginated list of all Topics on unsplash
 func (ts *TopicsService) All(ctx context.Context, queryParams client.QueryParams) ([]client.Topic, error) {
 	return ts.client.GetTopicsList(ctx, queryParams)
 }
 
-func (ts *TopicsService) Get(ctx context.Context, IDOrSlug string) (*client.Topic, error) {
-	return ts.client.GetTopic(ctx, IDOrSlug)
+// Get returns a specific Topic, using the topic's ID or slug
+func (ts *TopicsService) Get(ctx context.Context, topicIDOrSlug string) (*client.Topic, error) {
+	return ts.client.GetTopic(ctx, topicIDOrSlug)
 }
 
-func (ts *TopicsService) Photos(ctx context.Context, IDOrSlug string, queryParams client.QueryParams) ([]client.Photo, error) {
-	return ts.client.GetTopicPhotos(ctx, IDOrSlug, queryParams)
+// Photos returns a paginated list of Photos under the Topic requested using the 
+// topic's ID or slug
+func (ts *TopicsService) Photos(ctx context.Context, topicIDOrSlug string, queryParams client.QueryParams) ([]client.Photo, error) {
+	return ts.client.GetTopicPhotos(ctx, topicIDOrSlug, queryParams)
 }
