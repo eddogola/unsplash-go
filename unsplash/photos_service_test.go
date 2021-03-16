@@ -2,19 +2,16 @@ package unsplash
 
 import (
 	"context"
+	"os"
 	"testing"
 
-	"github.com/eddogola/readenv"
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
 func TestPhotosService(t *testing.T) {
 
 	t.Run("random photo when count not passed", func(t *testing.T) {
-		envData, err := readenv.File("../.env")
-		checkErrorIsNil(t, err)
-		clientID, err := envData.Get("CLIENT_ID")
-		checkErrorIsNil(t, err)
+		clientID := os.Getenv("CLIENT_ID")
 		cl := client.NewClient(clientID, nil, client.NewConfig())
 		unsplash := New(cl)
 		res, err := unsplash.Photos.GetRandom(context.Background(), nil)
@@ -24,15 +21,11 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("random photo when count passed", func(t *testing.T) {
-		envData, err := readenv.File("../.env")
-		if err != nil {
-			checkErrorIsNil(t, err)
-		}
-		clientID, err := envData.Get("CLIENT_ID")
+		clientID := os.Getenv("CLIENT_ID")
 		cl := client.NewClient(clientID, nil, client.NewConfig())
 		unsplash := New(cl)
 
-		res, err := unsplash.Photos.GetRandom(context.Background(), client.QueryParams{"count":"1"})
+		res, err := unsplash.Photos.GetRandom(context.Background(), client.QueryParams{"count": "1"})
 		randomPhotos := res.([]client.Photo)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, randomPhotos)
