@@ -14,27 +14,27 @@ type Errors struct {
 }
 
 var (
-	errCodeQueryParamNotFound = errors.New("`code` query parameter not found in the request URL")
-	errClientNotPrivate       = errors.New("client not private but used for functions that require private authentication")
+	ErrCodeQueryParamNotFound = errors.New("`code` query parameter not found in the request URL")
+	ErrClientNotPrivate       = errors.New("client not private but used for functions that require private authentication")
 )
 
-type errQueryNotInURL string
-type errRequiredScopeAbsent string
+type ErrQueryNotInURL string
+type ErrRequiredScopeAbsent string
 
-func (e errQueryNotInURL) Error() string {
+func (e ErrQueryNotInURL) Error() string {
 	return "search query parameter absent in url: " + string(e)
 }
 
-func (e errRequiredScopeAbsent) Error() string {
+func (e ErrRequiredScopeAbsent) Error() string {
 	return "required scope `%v` not in client auth scopes"
 }
 
-type errStatusCode struct {
+type ErrStatusCode struct {
 	statusCode int
 	reasons    []string
 }
 
-func (e errStatusCode) Error() string {
+func (e ErrStatusCode) Error() string {
 	return fmt.Sprintf("unexpected status code: %d\n encountered errors: %v", e.statusCode, e.reasons)
 }
 
