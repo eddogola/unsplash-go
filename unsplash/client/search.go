@@ -1,6 +1,8 @@
 package client
 
-import "context"
+import (
+	"context"
+)
 
 // PhotoSearchResult defines the structure of the response gotten
 // after searching for a picture
@@ -37,7 +39,7 @@ func (c *Client) SearchPhotos(ctx context.Context, queryParams QueryParams) (*Ph
 	}
 	// throw an error if search query parameter not in URL
 	if _, ok := queryParams["query"]; !ok {
-		return nil, errQueryNotInURL(link)
+		return nil, ErrQueryNotInURL(link)
 	}
 	data, err := c.getBodyBytes(ctx, link)
 	if err != nil {
@@ -62,7 +64,7 @@ func (c *Client) SearchCollections(ctx context.Context, queryParams QueryParams)
 	}
 	// throw an error if search query parameter not in URL
 	if _, ok := queryParams["query"]; !ok {
-		return nil, errQueryNotInURL(link)
+		return nil, ErrQueryNotInURL(link)
 	}
 	data, err := c.getBodyBytes(ctx, link)
 	if err != nil {
@@ -87,7 +89,7 @@ func (c *Client) SearchUsers(ctx context.Context, queryParams QueryParams) (*Use
 	}
 	// throw an error if search query parameter not in URL
 	if _, ok := queryParams["query"]; !ok {
-		return nil, errQueryNotInURL(link)
+		return nil, ErrQueryNotInURL(link)
 	}
 	data, err := c.getBodyBytes(ctx, link)
 	if err != nil {
