@@ -65,7 +65,6 @@ func NewPrivateAuthClient(ctx context.Context, clientID, clientSecret, redirectU
 		return nil, err
 	}
 	accessToken := authResponse.AccessToken
-	fmt.Println(accessToken)
 	authHeader := fmt.Sprintf("Bearer %s", accessToken)
 	c.Config.Headers.Add("Authentication", authHeader)
 	c.Config.Headers.Add("Accept-Version", "v1") // Add api version
