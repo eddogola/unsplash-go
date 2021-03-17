@@ -145,6 +145,12 @@ func TestPhotosService(t *testing.T) {
 		}
 	})
 
+	t.Run("update photo", func(t *testing.T) {
+		res, err := mockUnsplash.Photos.Update(context.Background(), "lb9hi0NDjT0", nil)
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, res)
+	})
+
 	t.Run("like photo", func(t *testing.T) {
 		res, err := mockUnsplash.Photos.Like(context.Background(), "lb9hi0NDjT0")
 		checkErrorIsNil(t, err)
