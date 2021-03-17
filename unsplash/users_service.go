@@ -7,10 +7,23 @@ import (
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
+// UsersServiceClient defines client methods used to get user resources
+type UsersServiceClient interface {
+	GetUserPublicProfile(context.Context, string) (*client.User, error)
+	GetUserPortfolioLink(context.Context, string) (*url.URL, error)
+	GetUserPhotos(context.Context, string, client.QueryParams) ([]client.Photo, error)
+	GetUserLikedPhotos(context.Context, string, client.QueryParams) ([]client.Photo, error)
+	GetUserCollections(context.Context, string, client.QueryParams) ([]client.Collection, error)
+	GetUserStats(context.Context, string, client.QueryParams) (*client.UserStats, error)
+	SearchUsers(context.Context, client.QueryParams) (*client.UserSearchResult, error)
+	GetUserPrivateProfile(context.Context) (*client.User, error)
+	UpdateUserProfile(context.Context, map[string]string) (*client.User, error)
+}
+
 // UsersService contains an underlying Unsplash client to
 //be used for http methods
 type UsersService struct {
-	client *client.Client
+	client UsersServiceClient
 }
 
 // PublicProfile returns the public profile of the user
