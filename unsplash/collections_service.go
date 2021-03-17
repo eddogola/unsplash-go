@@ -6,10 +6,24 @@ import (
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
+// CollectionsServiceClient defines client methods used to get collection resources
+type CollectionsServiceClient interface {
+	GetCollectionsList(context.Context, client.QueryParams) ([]client.Collection, error)
+	GetCollection(context.Context, int) (*client.Collection, error)
+	GetCollectionPhotos(context.Context, int, client.QueryParams) ([]client.Photo, error)
+	GetRelatedCollections(context.Context, int) ([]client.Collection, error)
+	SearchCollections(context.Context, client.QueryParams) (*client.CollectionSearchResult, error)
+	CreateCollection(context.Context, map[string]string) (*client.Collection, error)
+	UpdateCollection(context.Context, string, map[string]string) (*client.Collection, error)
+	DeleteCollection(context.Context, string) error
+	AddPhotoToCollection(context.Context, string, map[string]string) (*client.CollectionActionResponse, error)
+	RemovePhotoFromCollection(context.Context, string, map[string]string) (*client.CollectionActionResponse, error)
+}
+
 // CollectionsService contains an underlying Unsplash client to
 //be used for http methods
 type CollectionsService struct {
-	client *client.Client
+	client CollectionsServiceClient
 }
 
 // All returns a paginated list of all Collections on Unsplash
