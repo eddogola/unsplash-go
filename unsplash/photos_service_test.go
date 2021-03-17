@@ -83,8 +83,9 @@ func TestPhotosService(t *testing.T) {
 		checkRsNotNil(t, got)
 
 		lenExpected := 2
-		if lenExpected != len(got) {
-			t.Errorf("expected length %v but got %v", lenExpected, len(got))
+		lenGot := len(got)
+		if lenExpected != lenGot {
+			t.Errorf("expected length %v but got %v", lenExpected, lenGot)
 		}
 	})
 
@@ -127,9 +128,32 @@ func TestPhotosService(t *testing.T) {
 		checkRsNotNil(t, got)
 
 		lenExpected := 5
-		if len(got.Results) != lenExpected {
-			t.Errorf("expected length %v but got %v", lenExpected, len(got.Results))
+		lenGot := len(got.Results)
+		if lenGot != lenExpected {
+			t.Errorf("expected length %v but got %v", lenExpected, lenGot)
 		}
+	})
+
+	t.Run("like photo with non-private client", func(t *testing.T) {
+		res, err := realUnsplash.Photos.Like(context.Background(), "someID")
+		if res != nil {
+			t.Errorf("expected nil but got %v", res)
+		}
+
+		if err != client.ErrClientNotPrivate {
+			t.Errorf("expected error %v but got %v", client.ErrClientNotPrivate, err)
+		}
+	})
+
+	t.Run("like photo", func(t *testing.T) {
+		res, err := mockUnsplash.Photos.Like(context.Background(), "lb9hi0NDjT0")
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, res)
+	})
+
+	t.Run("unlike photo", func(t *testing.T) {
+		err := mockUnsplash.Photos.Unlike(context.Background(), "lb9hi0NDjT0")
+		checkErrorIsNil(t, err)
 	})
 }
 
