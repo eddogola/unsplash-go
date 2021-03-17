@@ -6,10 +6,17 @@ import (
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
+// TopicsServiceClient defines client methods used to get topic resources
+type TopicsServiceClient interface {
+	GetTopicsList(context.Context, client.QueryParams) ([]client.Topic, error)
+	GetTopic(context.Context, string) (*client.Topic, error)
+	GetTopicPhotos(context.Context, string, client.QueryParams) ([]client.Photo, error)
+}
+
 // TopicsService contains an underlying Unsplash client to
 //be used for http methods
 type TopicsService struct {
-	client *client.Client
+	client TopicsServiceClient
 }
 
 // All returns a paginated list of all Topics on unsplash
