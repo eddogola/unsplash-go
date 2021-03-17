@@ -11,8 +11,7 @@ import (
 func TestPhotosService(t *testing.T) {
 
 	t.Run("random photo when count not passed", func(t *testing.T) {
-		clientID := os.Getenv("CLIENT_ID")
-		cl := client.NewClient(clientID, nil, client.NewConfig())
+		cl := client.New(os.Getenv("CLIENT_ID"), nil, client.NewConfig())
 		unsplash := New(cl)
 		res, err := unsplash.Photos.GetRandom(context.Background(), nil)
 		randomPhoto := res.(*client.Photo)
@@ -21,8 +20,7 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("random photo when count passed", func(t *testing.T) {
-		clientID := os.Getenv("CLIENT_ID")
-		cl := client.NewClient(clientID, nil, client.NewConfig())
+		cl := client.New(os.Getenv("CLIENT_ID"), nil, client.NewConfig())
 		unsplash := New(cl)
 
 		res, err := unsplash.Photos.GetRandom(context.Background(), client.QueryParams{"count": "1"})

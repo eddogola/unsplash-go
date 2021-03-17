@@ -82,7 +82,7 @@ func (c *Client) GetPhotoList(ctx context.Context, queryParams QueryParams) ([]P
 	return pics, nil
 }
 
-// GetPhotoList takes in a context and photo id. If a photo with the given id exists,
+// GetPhoto takes in a context and photo id. If a photo with the given id exists,
 // the Photo is returned.
 // Get a Photo using photo ID
 // https://unsplash.com/documentation#get-a-photo

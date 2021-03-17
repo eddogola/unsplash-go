@@ -27,13 +27,14 @@ type Config struct {
 	Headers http.Header
 }
 
+// NewConfig constructs an empty Config object
 func NewConfig() *Config {
 	return &Config{make(http.Header)}
 }
 
-// NewClient initializes a new Client.
+// New initializes a new Client.
 // if a client is not provided, a default http client is used.
-func NewClient(clientID string, client *http.Client, config *Config) *Client {
+func New(clientID string, client *http.Client, config *Config) *Client {
 	if client == nil {
 		client = http.DefaultClient
 	}
