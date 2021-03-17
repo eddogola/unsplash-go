@@ -57,7 +57,13 @@ func (us *UsersService) Stats(ctx context.Context, username string, queryParams 
 }
 
 // Search takes in a search query under the given query parameters to return a list of User search results
-func (us *UsersService) Search(ctx context.Context, queryParams client.QueryParams) (*client.UserSearchResult, error) {
+func (us *UsersService) Search(ctx context.Context, searchQuery string, queryParams client.QueryParams) (*client.UserSearchResult, error) {
+	if queryParams == nil || queryParams["query"] == "" {
+		queryParams = make(client.QueryParams)
+		queryParams["query"] = searchQuery
+		return us.client.SearchUsers(ctx, queryParams)
+	}
+	queryParams["query"] = searchQuery
 	return us.client.SearchUsers(ctx, queryParams)
 }
 

@@ -47,7 +47,13 @@ func (cs *CollectionsService) Related(ctx context.Context, collectionID int) ([]
 }
 
 // Search takes in a search query under the given query parameters to return a list of Collection search results
-func (cs *CollectionsService) Search(ctx context.Context, queryParams client.QueryParams) (*client.CollectionSearchResult, error) {
+func (cs *CollectionsService) Search(ctx context.Context, searchQuery string, queryParams client.QueryParams) (*client.CollectionSearchResult, error) {
+	if queryParams == nil || queryParams["query"] == "" {
+		queryParams = make(client.QueryParams)
+		queryParams["query"] = searchQuery
+		return cs.client.SearchCollections(ctx, queryParams)
+	}
+	queryParams["query"] = searchQuery
 	return cs.client.SearchCollections(ctx, queryParams)
 }
 
