@@ -117,7 +117,7 @@ func (c *Client) getBodyBytes(ctx context.Context, link string) ([]byte, error) 
 	if err != nil {
 		return nil, err
 	} else if resp.StatusCode != http.StatusOK {
-		return nil, errStatusCode{resp.StatusCode, getErrReasons(resp)}
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	defer resp.Body.Close()
 

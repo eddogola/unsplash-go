@@ -15,11 +15,11 @@ import (
 func (c *Client) GetUserPrivateProfile(ctx context.Context) (*User, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `read_user` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(ReadUserScope); !ok {
-		return nil, errRequiredScopeAbsent(ReadUserScope)
+		return nil, ErrRequiredScopeAbsent(ReadUserScope)
 	}
 
 	data, err := c.getBodyBytes(ctx, PrivateUserProfileEndpoint)
@@ -42,11 +42,11 @@ func (c *Client) GetUserPrivateProfile(ctx context.Context) (*User, error) {
 func (c *Client) UpdateUserProfile(ctx context.Context, updatedData map[string]string) (*User, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `write_user` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WriteUserScope); !ok {
-		return nil, errRequiredScopeAbsent(WriteUserScope)
+		return nil, ErrRequiredScopeAbsent(WriteUserScope)
 	}
 	// make PUT request
 	resp, err := c.putHTTP(ctx, PrivateUserProfileEndpoint, updatedData)
@@ -74,11 +74,11 @@ func (c *Client) UpdateUserProfile(ctx context.Context, updatedData map[string]s
 func (c *Client) UpdatePhoto(ctx context.Context, photoID string, updatedData map[string]string) (*Photo, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `write_photo` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WritePhotosScope); !ok {
-		return nil, errRequiredScopeAbsent(WritePhotosScope)
+		return nil, ErrRequiredScopeAbsent(WritePhotosScope)
 	}
 	// make PUT request
 	endPoint := AllPhotosEndpoint + photoID
@@ -107,11 +107,11 @@ func (c *Client) UpdatePhoto(ctx context.Context, photoID string, updatedData ma
 func (c *Client) LikePhoto(ctx context.Context, photoID string) (*LikeResponse, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `write_likes` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WriteLikesScope); !ok {
-		return nil, errRequiredScopeAbsent(WriteLikesScope)
+		return nil, ErrRequiredScopeAbsent(WriteLikesScope)
 	}
 	// make POST request
 	endPoint := AllPhotosEndpoint + photoID + "/like"
@@ -141,7 +141,7 @@ func (c *Client) LikePhoto(ctx context.Context, photoID string) (*LikeResponse, 
 func (c *Client) UnlikePhoto(ctx context.Context, photoID string) error {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return errClientNotPrivate
+		return ErrClientNotPrivate
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
@@ -152,7 +152,7 @@ func (c *Client) UnlikePhoto(ctx context.Context, photoID string) error {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 204 {
-		return errStatusCode{resp.StatusCode, getErrReasons(resp)}
+		return ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return nil
 }
@@ -164,11 +164,11 @@ func (c *Client) UnlikePhoto(ctx context.Context, photoID string) error {
 func (c *Client) CreateCollection(ctx context.Context, data map[string]string) (*Collection, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
+		return nil, ErrRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make POST request
 	// responds with the new collection
@@ -199,11 +199,11 @@ func (c *Client) CreateCollection(ctx context.Context, data map[string]string) (
 func (c *Client) UpdateCollection(ctx context.Context, collectionID string, data map[string]string) (*Collection, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
+		return nil, ErrRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make PUT request
 	// responds with the updated collection
@@ -234,11 +234,11 @@ func (c *Client) UpdateCollection(ctx context.Context, collectionID string, data
 func (c *Client) DeleteCollection(ctx context.Context, collectionID string) error {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return errClientNotPrivate
+		return ErrClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
-		return errRequiredScopeAbsent(WriteCollectionsScope)
+		return ErrRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
@@ -250,7 +250,7 @@ func (c *Client) DeleteCollection(ctx context.Context, collectionID string) erro
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 204 {
-		return errStatusCode{resp.StatusCode, getErrReasons(resp)}
+		return ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return nil
 }
@@ -262,11 +262,11 @@ func (c *Client) DeleteCollection(ctx context.Context, collectionID string) erro
 func (c *Client) AddPhotoToCollection(ctx context.Context, collectionID string, data map[string]string) (*CollectionActionResponse, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
+		return nil, ErrRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make POST request
 	endPoint := CollectionsListEndpoint + collectionID + "/add"
@@ -296,11 +296,11 @@ func (c *Client) AddPhotoToCollection(ctx context.Context, collectionID string, 
 func (c *Client) RemovePhotoFromCollection(ctx context.Context, collectionID string, data map[string]string) (*CollectionActionResponse, error) {
 	// check if client is private to do private requests
 	if !isClientPrivate(c) {
-		return nil, errClientNotPrivate
+		return nil, ErrClientNotPrivate
 	}
 	// check if the `write_collections` scope is present in the private Client's scopes
 	if ok := c.AuthScopes.Contains(WriteCollectionsScope); !ok {
-		return nil, errRequiredScopeAbsent(WriteCollectionsScope)
+		return nil, ErrRequiredScopeAbsent(WriteCollectionsScope)
 	}
 	// make DELETE request
 	// responds with a 204 status code and an empty body
@@ -311,7 +311,7 @@ func (c *Client) RemovePhotoFromCollection(ctx context.Context, collectionID str
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 204 {
-		return nil, errStatusCode{resp.StatusCode, getErrReasons(resp)}
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 
 	// parse json response
