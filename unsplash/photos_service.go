@@ -48,7 +48,7 @@ func (ps *PhotosService) GetStats(ctx context.Context, photoID string, queryPara
 
 // Search takes in a search query in the query parameters and returns a list of Photo search results
 func (ps *PhotosService) Search(ctx context.Context, searchQuery string, queryParams client.QueryParams) (*client.PhotoSearchResult, error) {
-	if queryParams == nil || queryParams["query"] == "" {
+	if queryParams == nil {
 		queryParams = make(client.QueryParams)
 		queryParams["query"] = searchQuery
 		return ps.client.SearchPhotos(ctx, queryParams)
