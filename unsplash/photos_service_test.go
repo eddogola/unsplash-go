@@ -2,6 +2,8 @@ package unsplash
 
 import (
 	"context"
+	"os"
+	"reflect"
 	"testing"
 
 	"github.com/eddogola/unsplash-go/unsplash/client"
@@ -9,25 +11,25 @@ import (
 
 var pics = []client.Photo{
 	{
-		ID: "whackID",
-		Width: 1308,
-		Height: 768,
+		ID:        "whackID",
+		Width:     1308,
+		Height:    768,
 		Downloads: 400,
-		Likes: 799,
+		Likes:     799,
 	},
 	{
-		ID: "noID",
-		Width: 450,
+		ID:     "noID",
+		Width:  450,
 		Height: 600,
 	},
 }
 
 var pic = client.Photo{
-	ID: "whackID",
-	Width: 1308,
-	Height: 768,
+	ID:        "whackID",
+	Width:     1308,
+	Height:    768,
 	Downloads: 400,
-	Likes: 799,
+	Likes:     799,
 }
 
 type mockPhotoServiceClient struct{}
@@ -44,19 +46,19 @@ func (m *mockPhotoServiceClient) GetRandomPhoto(ctx context.Context, queryParams
 	}
 	return &pic, nil
 }
-func (m *mockPhotoServiceClient) GetPhotoStats(ctx context.Context,photoID  string, queryParams client.QueryParams) (*client.PhotoStats, error) {
+func (m *mockPhotoServiceClient) GetPhotoStats(ctx context.Context, photoID string, queryParams client.QueryParams) (*client.PhotoStats, error) {
 	return &client.PhotoStats{ID: "ladida"}, nil
 }
-func (m *mockPhotoServiceClient) SearchPhotos(ctx context.Context, queryParams client.QueryParams) (*client.PhotoSearchResult, error){
+func (m *mockPhotoServiceClient) SearchPhotos(ctx context.Context, queryParams client.QueryParams) (*client.PhotoSearchResult, error) {
 	return &client.PhotoSearchResult{Results: pics}, nil
 }
-func (m *mockPhotoServiceClient) UpdatePhoto(ctx context.Context, photoID string, updatedData map[string]string) (*client.Photo, error){
+func (m *mockPhotoServiceClient) UpdatePhoto(ctx context.Context, photoID string, updatedData map[string]string) (*client.Photo, error) {
 	return &pic, nil
 }
-func (m *mockPhotoServiceClient) LikePhoto(ctx context.Context, photoID string) (*client.LikeResponse, error){
+func (m *mockPhotoServiceClient) LikePhoto(ctx context.Context, photoID string) (*client.LikeResponse, error) {
 	return &client.LikeResponse{Photo: pic}, nil
 }
-func (m *mockPhotoServiceClient) UnlikePhoto(ctx context.Context, photoID string) (error){
+func (m *mockPhotoServiceClient) UnlikePhoto(ctx context.Context, photoID string) error {
 	return nil
 }
 
@@ -65,6 +67,29 @@ func TestPhotosService(t *testing.T) {
 	unsplash := &Unsplash{
 		Photos: mockPhotoService,
 	}
+
+	t.Run("all photos", func(t *testing.T) {
+		got, err := unsplash.Photos.All(context.Background(), nil)
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, got)
+		if !reflect.DeepEqual(got, pics) {
+			t.Errorf("expected %v but got %v", pics, got)
+		}
+	})
+
+	t.Run("all photos, when per_page is passed as 2", func(t *testing.T) {
+		cl := client.New(os.Getenv("CLIENT_ID"), nil, client.NewConfig())
+		unsplash := New(cl)
+		got, err := unsplash.Photos.All(context.Background(), client.QueryParams{"per_page": "2"})
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, got)
+
+		lenExpected := 2
+		lenGot := len(got)
+		if lenExpected != lenGot {
+			t.Errorf("expected length %v but got %v", lenExpected, lenGot)
+		}
+	})
 
 	t.Run("random photo when count not passed", func(t *testing.T) {
 		res, err := unsplash.Photos.GetRandom(context.Background(), nil)
