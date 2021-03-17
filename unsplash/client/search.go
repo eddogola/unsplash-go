@@ -1,6 +1,8 @@
 package client
 
-import "context"
+import (
+	"context"
+)
 
 // PhotoSearchResult defines the structure of the response gotten
 // after searching for a picture
