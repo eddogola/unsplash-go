@@ -6,10 +6,23 @@ import (
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
+// PhotosServiceClient defines client methods used to get or work
+// with photo resources
+type PhotosServiceClient interface {
+	GetPhotoList(context.Context, client.QueryParams) ([]client.Photo, error)
+	GetPhoto(context.Context, string) (*client.Photo, error)
+	GetRandomPhoto(context.Context, client.QueryParams) (interface{}, error)
+	GetPhotoStats(context.Context, string, client.QueryParams) (*client.PhotoStats, error)
+	SearchPhotos(context.Context, client.QueryParams) (*client.PhotoSearchResult, error)
+	UpdatePhoto(context.Context, string, map[string]string) (*client.Photo, error)
+	LikePhoto(context.Context, string) (*client.LikeResponse, error)
+	UnlikePhoto(context.Context, string) error
+}
+
 // PhotosService contains an underlying Unsplash client to
 //be used for http methods
 type PhotosService struct {
-	client *client.Client
+	client PhotosServiceClient
 }
 
 // All returns a paginated list of all the Photos on Unsplash
