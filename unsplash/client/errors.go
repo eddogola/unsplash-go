@@ -16,6 +16,7 @@ type Errors struct {
 var (
 	ErrCodeQueryParamNotFound = errors.New("`code` query parameter not found in the request URL")
 	ErrClientNotPrivate       = errors.New("client not private but used for functions that require private authentication")
+	ErrAuthCodeEmpty          = errors.New("Auth code provided is empty")
 )
 
 type ErrQueryNotInURL string
