@@ -68,6 +68,7 @@ func (c *Client) postHTTP(ctx context.Context, link string, postData map[string]
 		return nil, err
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, link, bytes.NewBuffer(data))
+	req.Header = c.Config.Headers
 	if err != nil {
 		return nil, err
 	}
@@ -85,6 +86,7 @@ func (c *Client) putHTTP(ctx context.Context, link string, putData map[string]st
 		return nil, err
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPut, link, bytes.NewBuffer(data))
+	req.Header = c.Config.Headers
 	if err != nil {
 		return nil, err
 	}
@@ -102,6 +104,7 @@ func (c *Client) deleteHTTP(ctx context.Context, link string, dt map[string]stri
 		return nil, err
 	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, link, bytes.NewBuffer(data))
+	req.Header = c.Config.Headers
 	if err != nil {
 		return nil, err
 	}

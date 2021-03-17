@@ -1,10 +1,12 @@
 package client
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -33,6 +35,14 @@ func (a *AuthScopes) String() string {
 	return strings.Join(*a, "+")
 }
 
+// NewAuthScopes constructs a new AuthScopes object, with an inital
+// `public` element
+func NewAuthScopes(scopes ...string) *AuthScopes {
+	as := AuthScopes{"public"}
+	as = append(as, scopes...)
+	return &as
+}
+
 // NewPrivateAuthClient initializes a new client that has been authorised
 // for private actions.
 func NewPrivateAuthClient(ctx context.Context, clientID, clientSecret, redirectURI string, client *http.Client, config *Config, as *AuthScopes) (*Client, error) {
@@ -45,12 +55,12 @@ func NewPrivateAuthClient(ctx context.Context, clientID, clientSecret, redirectU
 		Private:    true,
 		AuthScopes: *as}
 	// get authorization code
-	code, err := c.authGetCode(ctx, clientID, redirectURI)
+	authCode, err := c.authGetCode(ctx, clientID, redirectURI)
 	if err != nil {
 		return nil, err
 	}
 	// get access token
-	authResponse, err := c.authGetAccessToken(ctx, clientID, clientSecret, redirectURI, code)
+	authResponse, err := c.authGetAccessToken(ctx, clientID, clientSecret, redirectURI, authCode)
 	if err != nil {
 		return nil, err
 	}
@@ -70,44 +80,47 @@ func (c *Client) authGetCode(ctx context.Context, clientID, redirectURI string) 
 		"client_id":     clientID,
 		"redirect_uri":  redirectURI,
 		"response_type": "code", // The access response type you are requesting. The authorization workflow Unsplash supports requires the value “code” here.
-		"scope":         c.AuthScopes.String(),
 	})
 	link, err := buildURL(AuthCodeEndpoint, queryParams)
 	if err != nil {
 		return "", err
 	}
-	resp, err := c.getHTTP(ctx, link)
+	link += fmt.Sprintf("&scope=%s", c.AuthScopes.String())
+
+	// User instructions to get authorization code
+	fmt.Printf("Navigate to:\n%s\n\n", link)
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("You will redirected to the redirect uri, whose link will have a `code` query parameter")
+	fmt.Println("Paste the authorization code here: ")
+	authCode, err := reader.ReadString('\n')
 	if err != nil {
 		return "", err
 	}
 
-	// If the user accepts the request, the user will be redirected to the redirect_uri,
-	// with the authorization code in the code query parameter.
-	// get authorization code from the `code` query parameter
-	q := resp.Request.URL.Query()
-	codes, ok := q["code"]
-	if !ok {
-		// `code` query parameter not found, return error
-		return "", errCodeQueryParamNotFound
+	if authCode == "" {
+		return "", ErrAuthCodeEmpty
 	}
-	code := codes[0]
-	if err != nil {
-		return "", err
-	}
-	return code, nil
+	return authCode, nil
 }
 
-func (c *Client) authGetAccessToken(ctx context.Context, clientID, clientSecret, redirectURI string, code string) (*AuthResponse, error) {
-	postData := map[string]string{
+func (c *Client) authGetAccessToken(ctx context.Context, clientID, clientSecret, redirectURI string, authCode string) (*AuthResponse, error) {
+	qParams := QueryParams{
 		"client_id":     clientID,
 		"client_secret": clientSecret,
 		"redirect_uri":  redirectURI,
-		"code":          code,
+		"code":          strings.TrimSpace(authCode),
 		"grant_type":    "authorization_code",
 	}
-	resp, err := c.postHTTP(ctx, AuthTokenEndpoint, postData)
+	link, err := buildURL(AuthTokenEndpoint, qParams)
 	if err != nil {
 		return nil, err
+	}
+	resp, err := c.postHTTP(ctx, link, nil)
+	if err != nil {
+		return nil, err
+	} else if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	defer resp.Body.Close()
 
