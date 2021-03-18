@@ -6,6 +6,10 @@ A simple wrapper around the unsplash API.
 
 Client ID passed in Authorization headers by default, not query parameters.
 
+## Buggy areas
+
+Private client authentication not fully functional.
+
 ## Potential areas of improvement
 
 pagination not yet implemented.
@@ -27,7 +31,7 @@ import (
 func getPics() {
 // library initialization
 clientID := "<YOUR-CLIENT-ID>"
-cl := client.NewClient(clientID, http.DefaultClient, NewConfig())
+cl := client.NewClient(clientID, http.DefaultClient, client.NewConfig())
 unsplash := unsplash.New(cl)
 
 // query parameters to be passed to the request
