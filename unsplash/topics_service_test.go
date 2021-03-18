@@ -2,6 +2,7 @@ package unsplash
 
 import (
 	"context"
+	"reflect"
 	"testing"
 
 	"github.com/eddogola/unsplash-go/unsplash/client"
@@ -47,5 +48,19 @@ func TestTopicsService(t *testing.T) {
 		res, err := mockUnsplash.Topics.All(context.Background(), nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
+
+		if !reflect.DeepEqual(res, topics) {
+			t.Errorf("expected %v but got %v", topics, res)
+		}
+	})
+
+	t.Run("get specific topic", func(t *testing.T) {
+		res, err := mockUnsplash.Topics.Get(context.Background(), "kingCole")
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, res)
+
+		if res != &topic {
+			t.Errorf("expected %v but got %v", topic, res)
+		}
 	})
 }
