@@ -2,6 +2,7 @@ package unsplash
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -45,6 +46,7 @@ func (m *mockCollectionsServiceClient) GetRelatedCollections(ctx context.Context
 }
 
 func (m *mockCollectionsServiceClient) SearchCollections(ctx context.Context, queryParams client.QueryParams) (*client.CollectionSearchResult, error) {
+	// fmt.Println(queryParams["query"])
 	return &client.CollectionSearchResult{Results: collections}, nil
 }
 
@@ -111,5 +113,11 @@ func TestCollectionsService(t *testing.T) {
 		if !reflect.DeepEqual(res, collections) {
 			t.Errorf("expected %v but got %v", &collection, res)
 		}
+	})
+
+	t.Run("search collections", func(t *testing.T) {
+		res, err := mockUnsplash.Collections.Search(context.Background(), "cole", nil)
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, res)
 	})
 }
