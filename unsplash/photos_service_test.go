@@ -160,7 +160,7 @@ func TestPhotosService(t *testing.T) {
 func checkErrorIsNil(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
-		t.Errorf("unexpected error: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
 }
 
