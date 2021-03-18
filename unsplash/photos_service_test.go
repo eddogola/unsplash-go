@@ -24,13 +24,7 @@ var pics = []client.Photo{
 	},
 }
 
-var pic = client.Photo{
-	ID:        "whackID",
-	Width:     1308,
-	Height:    768,
-	Downloads: 400,
-	Likes:     799,
-}
+var pic = pics[0]
 
 type mockPhotoServiceClient struct{}
 
