@@ -92,4 +92,14 @@ func TestCollectionsService(t *testing.T) {
 			t.Errorf("expected %v but got %v", &collection, res)
 		}
 	})
+
+	t.Run("collection photos", func(t *testing.T) {
+		res, err := mockUnsplash.Collections.Photos(context.Background(), 1, nil)
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, res)
+
+		if !reflect.DeepEqual(res, pics) {
+			t.Errorf("expected %v but got %v", &collection, res)
+		}
+	})
 }
