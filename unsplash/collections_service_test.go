@@ -10,16 +10,16 @@ import (
 
 var collections = []client.Collection{
 	{
-		ID: 1,
-		Title: "J Cole Photoshoot",
+		ID:          1,
+		Title:       "J Cole Photoshoot",
 		TotalPhotos: 60,
-		CoverPhoto: pic, // `pic` from photo_service_test.go
+		CoverPhoto:  pic, // `pic` from photo_service_test.go
 	},
 	{
-		ID: 11,
-		Title: "Kendrick Photoshoot",
+		ID:          11,
+		Title:       "Kendrick Photoshoot",
 		TotalPhotos: 89,
-		CoverPhoto: pic, // `pic` from photo_service_test.go
+		CoverPhoto:  pic, // `pic` from photo_service_test.go
 	},
 }
 
@@ -80,6 +80,16 @@ func TestCollectionsService(t *testing.T) {
 
 		if !reflect.DeepEqual(res, collections) {
 			t.Errorf("expected %v but got %v", collections, res)
+		}
+	})
+
+	t.Run("single specific collection", func(t *testing.T) {
+		res, err := mockUnsplash.Collections.Get(context.Background(), 1)
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, res)
+
+		if res != &collection {
+			t.Errorf("expected %v but got %v", &collection, res)
 		}
 	})
 }
