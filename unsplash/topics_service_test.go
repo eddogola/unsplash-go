@@ -63,4 +63,14 @@ func TestTopicsService(t *testing.T) {
 			t.Errorf("expected %v but got %v", topic, res)
 		}
 	})
+
+	t.Run("get topic photos", func(t *testing.T) {
+		res, err := mockUnsplash.Topics.Photos(context.Background(), "kingKunta", nil)
+		checkErrorIsNil(t, err)
+		checkRsNotNil(t, res)
+
+		if !reflect.DeepEqual(res, pics) {
+			t.Errorf("expected %v but got %v", pics, res)
+		}
+	})
 }
