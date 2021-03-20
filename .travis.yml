@@ -3,10 +3,14 @@ language: go
 go:
  - tip
 
+before_script:
+  - go get github.com/golang/lint/golint    #Linter
+
 script:
  - cd unsplash
  - go test -race -v -coverprofile=coverage.txt -covermode=atomic .
  - go vet .
+ - golint -set_exit_status $(go list)
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
