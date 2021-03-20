@@ -7,7 +7,6 @@ before_script:
   - BASE_PACKAGE=github.com/eddogola/unsplash-go
   - UNSPLASH_PACKAGE=$BASE_PACKAGE/unsplash
   - CLIENT_PACKAGE=$UNSPLASH_PACKAGE/client
-  - EXAMPLE_PACKAGE=$UNSPLASH_PACKAGE/example
   - UTILS_PACKAGE=$UNSPLASH_PACKAGE/utils
   - GO_FILES=$(find . -iname '*.go' -type f)
   - go get -u golang.org/x/lint/golint
@@ -21,7 +20,6 @@ script:
  - go vet .
  - staticcheck $UNSPLASH_PACKAGE
  - staticcheck $CLIENT_PACKAGE
- - staticcheck $EXAMPLE_PACKAGE
  - staticcheck $UTILS_PACKAGE
  - gocyclo -over 19 $GO_FILES
  - golint -set_exit_status $(go list)
