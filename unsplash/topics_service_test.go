@@ -45,7 +45,7 @@ func TestTopicsService(t *testing.T) {
 	}
 
 	t.Run("all topics", func(t *testing.T) {
-		res, err := mockUnsplash.Topics.All(context.Background(), nil)
+		res, err := mockUnsplash.Topics.All(nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -55,7 +55,7 @@ func TestTopicsService(t *testing.T) {
 	})
 
 	t.Run("get specific topic", func(t *testing.T) {
-		res, err := mockUnsplash.Topics.Get(context.Background(), "kingCole")
+		res, err := mockUnsplash.Topics.Get("kingCole")
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -65,7 +65,7 @@ func TestTopicsService(t *testing.T) {
 	})
 
 	t.Run("get topic photos", func(t *testing.T) {
-		res, err := mockUnsplash.Topics.Photos(context.Background(), "kingKunta", nil)
+		res, err := mockUnsplash.Topics.Photos("kingKunta", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
