@@ -48,4 +48,3 @@ func checkErr(err error) {
 		os.Exit(1)
 	}
 }
-
