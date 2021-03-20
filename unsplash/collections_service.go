@@ -9,9 +9,9 @@ import (
 // CollectionsServiceClient defines client methods used to get collection resources
 type CollectionsServiceClient interface {
 	GetCollectionsList(context.Context, client.QueryParams) ([]client.Collection, error)
-	GetCollection(context.Context, int) (*client.Collection, error)
-	GetCollectionPhotos(context.Context, int, client.QueryParams) ([]client.Photo, error)
-	GetRelatedCollections(context.Context, int) ([]client.Collection, error)
+	GetCollection(context.Context, string) (*client.Collection, error)
+	GetCollectionPhotos(context.Context, string, client.QueryParams) ([]client.Photo, error)
+	GetRelatedCollections(context.Context, string) ([]client.Collection, error)
 	SearchCollections(context.Context, client.QueryParams) (*client.CollectionSearchResult, error)
 	CreateCollection(context.Context, map[string]string) (*client.Collection, error)
 	UpdateCollection(context.Context, string, map[string]string) (*client.Collection, error)
@@ -33,19 +33,19 @@ func (cs *CollectionsService) All(queryParams client.QueryParams) ([]client.Coll
 }
 
 // Get returns a specific Collection, given its id
-func (cs *CollectionsService) Get(collectionID int) (*client.Collection, error) {
+func (cs *CollectionsService) Get(collectionID string) (*client.Collection, error) {
 	ctx := context.Background()
 	return cs.client.GetCollection(ctx, collectionID)
 }
 
 // Photos returns a paginated list of Photos under the given collection
-func (cs *CollectionsService) Photos(collectionID int, queryParams client.QueryParams) ([]client.Photo, error) {
+func (cs *CollectionsService) Photos(collectionID string, queryParams client.QueryParams) ([]client.Photo, error) {
 	ctx := context.Background()
 	return cs.client.GetCollectionPhotos(ctx, collectionID, queryParams)
 }
 
 // Related returns a paginated list of collections related to the given collection
-func (cs *CollectionsService) Related(collectionID int) ([]client.Collection, error) {
+func (cs *CollectionsService) Related(collectionID string) ([]client.Collection, error) {
 	ctx := context.Background()
 	return cs.client.GetRelatedCollections(ctx, collectionID)
 }
