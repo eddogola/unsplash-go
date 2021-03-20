@@ -73,7 +73,7 @@ func TestUsersService(t *testing.T) {
 	}
 
 	t.Run("public profile", func(t *testing.T) {
-		res, err := mockUnsplash.Users.PublicProfile(context.Background(), "cole")
+		res, err := mockUnsplash.Users.PublicProfile("cole")
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -83,7 +83,7 @@ func TestUsersService(t *testing.T) {
 	})
 
 	t.Run("portfolio url", func(t *testing.T) {
-		res, err := mockUnsplash.Users.PortfolioURL(context.Background(), "cole")
+		res, err := mockUnsplash.Users.PortfolioURL("cole")
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -93,7 +93,7 @@ func TestUsersService(t *testing.T) {
 	})
 
 	t.Run("photos", func(t *testing.T) {
-		res, err := mockUnsplash.Users.Photos(context.Background(), "cole", nil)
+		res, err := mockUnsplash.Users.Photos("cole", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -103,7 +103,7 @@ func TestUsersService(t *testing.T) {
 	})
 
 	t.Run("liked photos", func(t *testing.T) {
-		res, err := mockUnsplash.Users.LikedPhotos(context.Background(), "cole", nil)
+		res, err := mockUnsplash.Users.LikedPhotos("cole", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -113,7 +113,7 @@ func TestUsersService(t *testing.T) {
 	})
 
 	t.Run("collections", func(t *testing.T) {
-		res, err := mockUnsplash.Users.Collections(context.Background(), "cole", nil)
+		res, err := mockUnsplash.Users.Collections("cole", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -123,25 +123,25 @@ func TestUsersService(t *testing.T) {
 	})
 
 	t.Run("stats", func(t *testing.T) {
-		res, err := mockUnsplash.Users.Stats(context.Background(), "cole", nil)
+		res, err := mockUnsplash.Users.Stats("cole", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("search", func(t *testing.T) {
-		res, err := mockUnsplash.Users.Search(context.Background(), "khalid", nil)
+		res, err := mockUnsplash.Users.Search("khalid", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("private portfolio", func(t *testing.T) {
-		res, err := mockUnsplash.Users.PrivateProfile(context.Background())
+		res, err := mockUnsplash.Users.PrivateProfile()
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("update profile", func(t *testing.T) {
-		res, err := mockUnsplash.Users.UpdateProfile(context.Background(), nil)
+		res, err := mockUnsplash.Users.UpdateProfile(nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
