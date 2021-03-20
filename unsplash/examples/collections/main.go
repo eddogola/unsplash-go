@@ -44,7 +44,7 @@ func main() {
 
 func checkErr(err error) {
 	if err != nil {
-		fmt.Printf("encountered unexpected error: %v\n", err)
+		fmt.Printf("encountered unexpected error: %+v\n", err)
 		os.Exit(1)
 	}
 }
