@@ -34,6 +34,10 @@ A simple wrapper around the unsplash API.
       - [Collections.Photos](#collectionsphotos)
       - [Collections.Related](#collectionsrelated)
       - [Collections.Search](#collectionssearch)
+    - [unsplash.Topics](#unsplashtopics)
+      - [Topics.All](#topicsall)
+      - [Topics.Get](#topicsget)
+      - [Topics.Photos](#topicsphotos)
   - [Authentication](#authentication)
   - [Buggy areas](#buggy-areas)
   - [Potential areas of improvement](#potential-areas-of-improvement)
@@ -79,6 +83,10 @@ You can then [create a new application](https://unsplash.com/oauth/applications/
   - [Photos](#collectionsphotos)
   - [Related](#collectionsrelated)
   - [Search](#collectionssearch)
+- [unsplash.Topic](#unsplashtopics)
+  - [All](#topicsall)
+  - [Get](#topicsget)
+  - [Photos](#topicsphotos)
 
 ### Importing
 
@@ -259,6 +267,32 @@ Returns the results of searching a collection in a `*client.CollectionSearchResu
 
 ```go
 searchResults, err := unsplash.Collections.Search("code", nil)
+```
+
+### unsplash.Topics
+
+#### Topics.All
+
+Returns a list of all topics.
+
+```go
+topics, err := unsplash.Topics.All(nil)
+```
+
+#### Topics.Get
+
+Returns a specific `*client.Topic` object, given the topic's ID.
+
+```go
+topic, err := unsplash.Topics.Get(`topicID`)
+```
+
+#### Topics.Photos
+
+Returns a list of `*client.Photo`s in the given the topic's ID.
+
+```go
+photos, err := unsplash.Topics.Photos(`topicID`, nil)
 ```
 
 ## Authentication
