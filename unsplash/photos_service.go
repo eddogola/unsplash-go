@@ -35,14 +35,14 @@ func (ps *PhotosService) Get(ctx context.Context, photoID string) (*client.Photo
 	return ps.client.GetPhoto(ctx, photoID)
 }
 
-// GetRandom returns a random Photo.
+// Random returns a random Photo.
 // Returns a paginated list of Photos if `count` query parameter is provided in the query parameters.
-func (ps *PhotosService) GetRandom(ctx context.Context, queryParams client.QueryParams) (interface{}, error) {
+func (ps *PhotosService) Random(ctx context.Context, queryParams client.QueryParams) (interface{}, error) {
 	return ps.client.GetRandomPhoto(ctx, queryParams)
 }
 
-// GetStats returns the requested Photo's Stats
-func (ps *PhotosService) GetStats(ctx context.Context, photoID string, queryParams client.QueryParams) (*client.PhotoStats, error) {
+// Stats returns the requested Photo's Stats
+func (ps *PhotosService) Stats(ctx context.Context, photoID string, queryParams client.QueryParams) (*client.PhotoStats, error) {
 	return ps.client.GetPhotoStats(ctx, photoID, queryParams)
 }
 

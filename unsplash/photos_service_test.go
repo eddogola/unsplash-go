@@ -93,14 +93,14 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("random photo when count not passed", func(t *testing.T) {
-		res, err := mockUnsplash.Photos.GetRandom(context.Background(), nil)
+		res, err := mockUnsplash.Photos.Random(context.Background(), nil)
 		randomPhoto := res.(*client.Photo)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, randomPhoto)
 	})
 
 	t.Run("random photo when count passed", func(t *testing.T) {
-		res, err := mockUnsplash.Photos.GetRandom(context.Background(), client.QueryParams{"count": "1"})
+		res, err := mockUnsplash.Photos.Random(context.Background(), client.QueryParams{"count": "1"})
 		randomPhotos := res.([]client.Photo)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, randomPhotos)
