@@ -35,7 +35,7 @@ func (a *AuthScopes) String() string {
 	return strings.Join(*a, "+")
 }
 
-// NewAuthScopes constructs a new AuthScopes object, with an inital
+// NewAuthScopes constructs a new AuthScopes object, with an initial
 // `public` element
 func NewAuthScopes(scopes ...string) *AuthScopes {
 	as := AuthScopes{"public"}

@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-// QueryParams defines url link paramaters
+// QueryParams defines url link parameters
 type QueryParams map[string]string
 
 // Client defines methods to interact with the Unsplash API
