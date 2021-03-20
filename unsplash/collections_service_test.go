@@ -10,13 +10,13 @@ import (
 
 var collections = []client.Collection{
 	{
-		ID:          1,
+		ID:          "1",
 		Title:       "J Cole Photoshoot",
 		TotalPhotos: 60,
 		CoverPhoto:  pic, // `pic` from photo_service_test.go
 	},
 	{
-		ID:          11,
+		ID:          "11",
 		Title:       "Kendrick Photoshoot",
 		TotalPhotos: 89,
 		CoverPhoto:  pic, // `pic` from photo_service_test.go
@@ -31,16 +31,16 @@ func (m *mockCollectionsServiceClient) GetCollectionsList(ctx context.Context, q
 	return collections, nil
 }
 
-func (m *mockCollectionsServiceClient) GetCollection(ctx context.Context, collectionID int) (*client.Collection, error) {
+func (m *mockCollectionsServiceClient) GetCollection(ctx context.Context, collectionID string) (*client.Collection, error) {
 	collection.ID = collectionID
 	return &collection, nil
 }
 
-func (m *mockCollectionsServiceClient) GetCollectionPhotos(ctx context.Context, collectionID int, queryParams client.QueryParams) ([]client.Photo, error) {
+func (m *mockCollectionsServiceClient) GetCollectionPhotos(ctx context.Context, collectionID string, queryParams client.QueryParams) ([]client.Photo, error) {
 	return pics, nil // get `pics` from photo_service_test.go
 }
 
-func (m *mockCollectionsServiceClient) GetRelatedCollections(ctx context.Context, collectionID int) ([]client.Collection, error) {
+func (m *mockCollectionsServiceClient) GetRelatedCollections(ctx context.Context, collectionID string) ([]client.Collection, error) {
 	return collections, nil
 }
 
@@ -85,7 +85,7 @@ func TestCollectionsService(t *testing.T) {
 	})
 
 	t.Run("single specific collection", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Get(1)
+		res, err := mockUnsplash.Collections.Get("1")
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -95,7 +95,7 @@ func TestCollectionsService(t *testing.T) {
 	})
 
 	t.Run("collection photos", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Photos(1, nil)
+		res, err := mockUnsplash.Collections.Photos("1", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -105,7 +105,7 @@ func TestCollectionsService(t *testing.T) {
 	})
 
 	t.Run("related collections", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Related(1)
+		res, err := mockUnsplash.Collections.Related("1")
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
