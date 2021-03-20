@@ -63,7 +63,7 @@ func TestPhotosService(t *testing.T) {
 	realUnsplash := New(client.New(os.Getenv("CLIENT_ID"), nil, client.NewConfig()))
 
 	t.Run("all photos", func(t *testing.T) {
-		got, err := mockUnsplash.Photos.All(context.Background(), nil)
+		got, err := mockUnsplash.Photos.All(nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, got)
 		if !reflect.DeepEqual(got, pics) {
@@ -72,7 +72,7 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("all photos, when per_page is passed as 2", func(t *testing.T) {
-		got, err := realUnsplash.Photos.All(context.Background(), client.QueryParams{"per_page": "2"})
+		got, err := realUnsplash.Photos.All(client.QueryParams{"per_page": "2"})
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, got)
 
@@ -84,7 +84,7 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("get specific photo", func(t *testing.T) {
-		got, err := mockUnsplash.Photos.Get(context.Background(), "someID")
+		got, err := mockUnsplash.Photos.Get("someID")
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, got)
 		if !reflect.DeepEqual(got, &pic) {
@@ -93,21 +93,21 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("random photo when count not passed", func(t *testing.T) {
-		res, err := mockUnsplash.Photos.Random(context.Background(), nil)
+		res, err := mockUnsplash.Photos.Random(nil)
 		randomPhoto := res.(*client.Photo)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, randomPhoto)
 	})
 
 	t.Run("random photo when count passed", func(t *testing.T) {
-		res, err := mockUnsplash.Photos.Random(context.Background(), client.QueryParams{"count": "1"})
+		res, err := mockUnsplash.Photos.Random(client.QueryParams{"count": "1"})
 		randomPhotos := res.([]client.Photo)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, randomPhotos)
 	})
 
 	t.Run("search photos", func(t *testing.T) {
-		got, err := mockUnsplash.Photos.Search(context.Background(), "food", nil)
+		got, err := mockUnsplash.Photos.Search("food", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, got)
 
@@ -117,7 +117,7 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("search photos with per_page set", func(t *testing.T) {
-		got, err := realUnsplash.Photos.Search(context.Background(), "code", client.QueryParams{"per_page": "5"})
+		got, err := realUnsplash.Photos.Search("code", client.QueryParams{"per_page": "5"})
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, got)
 
@@ -129,7 +129,7 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("like photo with non-private client", func(t *testing.T) {
-		res, err := realUnsplash.Photos.Like(context.Background(), "someID")
+		res, err := realUnsplash.Photos.Like("someID")
 		if res != nil {
 			t.Errorf("expected nil but got %v", res)
 		}
@@ -140,19 +140,19 @@ func TestPhotosService(t *testing.T) {
 	})
 
 	t.Run("update photo", func(t *testing.T) {
-		res, err := mockUnsplash.Photos.Update(context.Background(), "lb9hi0NDjT0", nil)
+		res, err := mockUnsplash.Photos.Update("lb9hi0NDjT0", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("like photo", func(t *testing.T) {
-		res, err := mockUnsplash.Photos.Like(context.Background(), "lb9hi0NDjT0")
+		res, err := mockUnsplash.Photos.Like("lb9hi0NDjT0")
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("unlike photo", func(t *testing.T) {
-		err := mockUnsplash.Photos.Unlike(context.Background(), "lb9hi0NDjT0")
+		err := mockUnsplash.Photos.Unlike("lb9hi0NDjT0")
 		checkErrorIsNil(t, err)
 	})
 }
