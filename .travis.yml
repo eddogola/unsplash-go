@@ -4,12 +4,22 @@ go:
  - tip
 
 before_script:
-  - go get github.com/golang/lint/golint    #Linter
+  - $BASE_PACKAGE=github.com/eddogola/unsplash-go
+  - $UNSPLASH_PACKAGE=$BASE_PACKAGE+/unsplash
+  - $CLIENT_PACKAGE=$UNSPLASH_PACKAGE+/client
+  - $EXAMPLE_PACKAGE=$UNSPLASH_PACKAGE+/example
+  - $UTILS_PACKAGE=$UNSPLASH_PACKAGE+/utils
+  - go get github.com/golang/lint/golint
+  - go get honnef.co/go/tools/cmd/staticcheck
 
 script:
  - cd unsplash
  - go test -race -v -coverprofile=coverage.txt -covermode=atomic .
  - go vet .
+ - staticcheck $UNSPLASH_PACKAGE
+ - staticcheck $CLIENT_PACKAGE
+ - staticcheck $EXAMPLE_PACKAGE
+ - staticcheck $UTILS_PACKAGE
  - golint -set_exit_status $(go list)
 
 after_success:
