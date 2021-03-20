@@ -75,7 +75,7 @@ func TestCollectionsService(t *testing.T) {
 	}
 
 	t.Run("all collections", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.All(context.Background(), nil)
+		res, err := mockUnsplash.Collections.All(nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -85,7 +85,7 @@ func TestCollectionsService(t *testing.T) {
 	})
 
 	t.Run("single specific collection", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Get(context.Background(), 1)
+		res, err := mockUnsplash.Collections.Get(1)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -95,7 +95,7 @@ func TestCollectionsService(t *testing.T) {
 	})
 
 	t.Run("collection photos", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Photos(context.Background(), 1, nil)
+		res, err := mockUnsplash.Collections.Photos(1, nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -105,7 +105,7 @@ func TestCollectionsService(t *testing.T) {
 	})
 
 	t.Run("related collections", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Related(context.Background(), 1)
+		res, err := mockUnsplash.Collections.Related(1)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 
@@ -115,36 +115,36 @@ func TestCollectionsService(t *testing.T) {
 	})
 
 	t.Run("search collections", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Search(context.Background(), "cole", nil)
+		res, err := mockUnsplash.Collections.Search("cole", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("create collection", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Create(context.Background(), nil)
+		res, err := mockUnsplash.Collections.Create(nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("update collection", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.Update(context.Background(), "cole", nil)
+		res, err := mockUnsplash.Collections.Update("cole", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("delete collection", func(t *testing.T) {
-		err := mockUnsplash.Collections.Delete(context.Background(), "123")
+		err := mockUnsplash.Collections.Delete("123")
 		checkErrorIsNil(t, err)
 	})
 
 	t.Run("add photo to collection", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.AddPhoto(context.Background(), "123", nil)
+		res, err := mockUnsplash.Collections.AddPhoto("123", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
 
 	t.Run("remove photo from collection", func(t *testing.T) {
-		res, err := mockUnsplash.Collections.RemovePhoto(context.Background(), "123", nil)
+		res, err := mockUnsplash.Collections.RemovePhoto("123", nil)
 		checkErrorIsNil(t, err)
 		checkRsNotNil(t, res)
 	})
