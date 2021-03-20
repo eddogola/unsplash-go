@@ -27,37 +27,44 @@ type UsersService struct {
 }
 
 // PublicProfile returns the public profile of the user
-func (us *UsersService) PublicProfile(ctx context.Context, username string) (*client.User, error) {
+func (us *UsersService) PublicProfile(username string) (*client.User, error) {
+	ctx := context.Background()
 	return us.client.GetUserPublicProfile(ctx, username)
 }
 
 // PortfolioURL returns a parsed URL of the user
-func (us *UsersService) PortfolioURL(ctx context.Context, username string) (*url.URL, error) {
+func (us *UsersService) PortfolioURL(username string) (*url.URL, error) {
+	ctx := context.Background()
 	return us.client.GetUserPortfolioLink(ctx, username)
 }
 
 // Photos returns a paginated list of Photos uploaded by the user
-func (us *UsersService) Photos(ctx context.Context, username string, queryParams client.QueryParams) ([]client.Photo, error) {
+func (us *UsersService) Photos(username string, queryParams client.QueryParams) ([]client.Photo, error) {
+	ctx := context.Background()
 	return us.client.GetUserPhotos(ctx, username, queryParams)
 }
 
 // LikedPhotos returns a paginated list of photos liked by the user
-func (us *UsersService) LikedPhotos(ctx context.Context, username string, queryParams client.QueryParams) ([]client.Photo, error) {
+func (us *UsersService) LikedPhotos(username string, queryParams client.QueryParams) ([]client.Photo, error) {
+	ctx := context.Background()
 	return us.client.GetUserLikedPhotos(ctx, username, queryParams)
 }
 
 // Collections returns a paginated list of collections created by the user
-func (us *UsersService) Collections(ctx context.Context, username string, queryParams client.QueryParams) ([]client.Collection, error) {
+func (us *UsersService) Collections(username string, queryParams client.QueryParams) ([]client.Collection, error) {
+	ctx := context.Background()
 	return us.client.GetUserCollections(ctx, username, queryParams)
 }
 
 // Stats returns the user's stats
-func (us *UsersService) Stats(ctx context.Context, username string, queryParams client.QueryParams) (*client.UserStats, error) {
+func (us *UsersService) Stats(username string, queryParams client.QueryParams) (*client.UserStats, error) {
+	ctx := context.Background()
 	return us.client.GetUserStats(ctx, username, queryParams)
 }
 
 // Search takes in a search query under the given query parameters to return a list of User search results
-func (us *UsersService) Search(ctx context.Context, searchQuery string, queryParams client.QueryParams) (*client.UserSearchResult, error) {
+func (us *UsersService) Search(searchQuery string, queryParams client.QueryParams) (*client.UserSearchResult, error) {
+	ctx := context.Background()
 	if queryParams == nil || queryParams["query"] == "" {
 		queryParams = make(client.QueryParams)
 		queryParams["query"] = searchQuery
@@ -70,11 +77,13 @@ func (us *UsersService) Search(ctx context.Context, searchQuery string, queryPar
 // methods requiring private authentication
 
 // PrivateProfile returns the authenticated user's private profile
-func (us *UsersService) PrivateProfile(ctx context.Context) (*client.User, error) {
+func (us *UsersService) PrivateProfile() (*client.User, error) {
+	ctx := context.Background()
 	return us.client.GetUserPrivateProfile(ctx)
 }
 
 // UpdateProfile updates the authenticated user's profile using the data map provided
-func (us *UsersService) UpdateProfile(ctx context.Context, updatedData map[string]string) (*client.User, error) {
+func (us *UsersService) UpdateProfile(updatedData map[string]string) (*client.User, error) {
+	ctx := context.Background()
 	return us.client.UpdateUserProfile(ctx, updatedData)
 }
