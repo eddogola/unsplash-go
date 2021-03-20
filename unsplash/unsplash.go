@@ -19,6 +19,6 @@ func New(c *client.Client) *Unsplash {
 	unsplash.Users = &UsersService{client: unsplash.client}
 	unsplash.Photos = &PhotosService{client: unsplash.client}
 	unsplash.Collections = &CollectionsService{client: unsplash.client}
-
+	unsplash.Topics = &TopicsService{client: unsplash.client}
 	return unsplash
 }
