@@ -1,7 +1,6 @@
 package unsplash
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -11,7 +10,7 @@ import (
 func ExamplePhotosService_Random() {
 	cl := client.New(os.Getenv("CLIENT_ID"), nil, client.NewConfig())
 	unsplash := New(cl)
-	res, err := unsplash.Photos.Random(context.Background(), nil)
+	res, err := unsplash.Photos.Random(nil)
 	if err != nil {
 		fmt.Println(err)
 	}
