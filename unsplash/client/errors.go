@@ -21,7 +21,7 @@ var (
 	// for private functions.
 	ErrClientNotPrivate       = errors.New("client not private but used for functions that require private authentication")
 	// ErrAuthCodeEmpty is raised when the authorization code is empty.
-	ErrAuthCodeEmpty          = errors.New("Auth code provided is empty")
+	ErrAuthCodeEmpty          = errors.New("auth code provided is empty")
 )
 
 // ErrQueryNotInURL is raised when a search query parameter is not part of the url.
