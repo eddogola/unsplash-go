@@ -9,6 +9,7 @@ before_script:
   - $CLIENT_PACKAGE=$UNSPLASH_PACKAGE+/client
   - $EXAMPLE_PACKAGE=$UNSPLASH_PACKAGE+/example
   - $UTILS_PACKAGE=$UNSPLASH_PACKAGE+/utils
+  - $GO_FILES=$(find . -iname '*.go' -type f)
   - go get github.com/golang/lint/golint
   - go get honnef.co/go/tools/cmd/staticcheck
 
@@ -20,6 +21,7 @@ script:
  - staticcheck $CLIENT_PACKAGE
  - staticcheck $EXAMPLE_PACKAGE
  - staticcheck $UTILS_PACKAGE
+ - gocyclo -over 19 $GO_FILES
  - golint -set_exit_status $(go list)
 
 after_success:
