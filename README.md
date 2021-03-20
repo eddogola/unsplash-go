@@ -1,5 +1,10 @@
 # Unsplash API wrapper
 
+[![Build Status](https://travis-ci.com/eddogola/unsplash-go.svg?branch=main)](https://travis-ci.com/eddogola/unsplash-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/eddogola/unsplash-go)](https://goreportcard.com/report/github.com/eddogola/unsplash-go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/eddogola/unsplash-go.svg)](https://pkg.go.dev/github.com/eddogola/unsplash-go)
+[![codecov](https://codecov.io/gh/eddogola/unsplash-go/branch/main/graph/badge.svg?token=AH24IA8W7G)](https://codecov.io/gh/eddogola/unsplash-go)
+
 A simple wrapper around the unsplash API.
 
 ## Documentation
