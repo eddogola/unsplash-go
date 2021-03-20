@@ -23,6 +23,11 @@ script:
  - staticcheck $UTILS_PACKAGE
  - gocyclo -over 19 $GO_FILES
  - golint -set_exit_status $(go list)
+  #check that examples don't exit with a nonzero status code 
+ - go run examples/collections/main.go
+ - go run examples/photos/main.go
+ - go run examples/topics/main.go
+ - go run examples/users/main.go
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
