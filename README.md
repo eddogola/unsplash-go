@@ -18,8 +18,16 @@ A simple wrapper around the unsplash API.
       - [Random](#random)
         - [`count` not provided](#count-not-provided)
         - [`count` provided](#count-provided)
-      - [Stats](#stats)
-      - [Search](#search)
+      - [Photos.Stats](#photosstats)
+      - [Photos.Search](#photossearch)
+    - [unsplash.Users](#unsplashusers)
+      - [PublicProfile](#publicprofile)
+      - [PortfolioURL](#portfoliourl)
+      - [Photos](#photos)
+      - [Liked Photos](#liked-photos)
+      - [Collections](#collections)
+      - [Users.Stats](#usersstats)
+      - [Users.Search](#userssearch)
   - [Authentication](#authentication)
   - [Buggy areas](#buggy-areas)
   - [Potential areas of improvement](#potential-areas-of-improvement)
@@ -48,8 +56,17 @@ You can then [create a new application](https://unsplash.com/oauth/applications/
   - [All](#all)
   - [Get](#get)
   - [Random](#random)
-  - [Stats](#stats)
-  - [Search](#search)
+  - [Stats](#photossearch)
+  - [Search](#photossearch)
+- [unsplash.Users]
+
+  - [PublicProfile](#publicprofile)
+  - [PortfolioURL](#portfoliourl)
+  - [Photos](#photos)
+  - [Liked Photos](#liked-photos)
+  - [Collections](#collections)
+  - [Stats](#usersstats)
+  - [Search](#userssearch)
 
 ### Importing
 
@@ -114,7 +131,7 @@ res, err := unsplash.Photos.Random(client.QueryParams{"count": "1"})
 randomPhotos := res.([]client.Photo)
 ```
 
-#### Stats
+#### Photos.Stats
 
 Get a specific photo's stats. Returns a `*client.PhotoStats` object.
 
@@ -122,12 +139,71 @@ Get a specific photo's stats. Returns a `*client.PhotoStats` object.
 stats, err := unsplash.Photos.Stats(pics[0].ID, nil)
 ```
 
-#### Search
+#### Photos.Search
 
 Search photos. Returns a `*client.PhotoSearchResults` object.
 
 ```go
 searchResult, err := unsplash.Photos.Search("food", nil)
+fmt.Println(searchResult.Results)
+```
+
+### unsplash.Users
+
+#### PublicProfile
+
+Get a user's public profile. Returns a `*client.User` object.
+
+```go
+profile, err := unsplash.Users.PublicProfile(`username`)
+```
+
+#### PortfolioURL
+
+Parses a user's portoflio URL, returning it in a `*url.URL` object.
+
+```go
+url, err := unsplash.Users.PortfolioURL(`username`)
+```
+
+#### Photos
+
+Get a user's photos.
+
+```go
+photos, err := unsplash.Users.Photos(`username`, nil)
+```
+
+#### Liked Photos
+
+Get a user's liked photos.
+
+```go
+likedPhotos, err := unsplash.Users.LikedPhotos(`username`, nil)
+```
+
+#### Collections
+
+Get collections created by user.
+
+```go
+collections, err := unsplash.Users.Collections(`username`, nil)
+```
+
+#### Users.Stats
+
+Get a user's stats. Returns a `*client.UserStats` object.
+
+```go
+stats, err := unsplash.Users.Stats(username, nil)
+```
+
+#### Users.Search
+
+Search for a user. Returns search results in a `*client.UserSearchResults` object
+
+```go
+searchResult, err := unsplash.Users.Search(`username`, nil)
 fmt.Println(searchResult.Results)
 ```
 
