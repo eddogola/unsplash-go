@@ -29,7 +29,7 @@ func (ts *TopicsService) Get(ctx context.Context, topicIDOrSlug string) (*client
 	return ts.client.GetTopic(ctx, topicIDOrSlug)
 }
 
-// Photos returns a paginated list of Photos under the Topic requested using the 
+// Photos returns a paginated list of Photos under the Topic requested using the
 // topic's ID or slug
 func (ts *TopicsService) Photos(ctx context.Context, topicIDOrSlug string, queryParams client.QueryParams) ([]client.Photo, error) {
 	return ts.client.GetTopicPhotos(ctx, topicIDOrSlug, queryParams)

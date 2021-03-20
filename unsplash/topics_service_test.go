@@ -10,13 +10,13 @@ import (
 
 var topics = []client.Topic{
 	{
-		ID: "cole",
-		Title: "king Cole",
+		ID:         "cole",
+		Title:      "king Cole",
 		CoverPhoto: pic,
 	},
 	{
-		ID: "kendrick",
-		Title: "king Kunta",
+		ID:         "kendrick",
+		Title:      "king Kunta",
 		CoverPhoto: pic,
 	},
 }

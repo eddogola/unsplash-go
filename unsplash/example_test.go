@@ -15,7 +15,7 @@ func ExamplePhotosService_GetRandom() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	
+
 	randomPhoto := res.(*client.Photo)
 	randomPhoto.ID = "losemycool"
 	fmt.Println(randomPhoto.URLs)

@@ -1,10 +1,10 @@
 package utils
 
 /*
-Every image returned by the Unsplash API is a dynamic image URL, which means that it can be manipulated to create 
+Every image returned by the Unsplash API is a dynamic image URL, which means that it can be manipulated to create
 new transformations of the image by simply adjusting the query parameters of the image URL.
 
-This enables resizing, cropping, compression, and changing the format of the image in realtime client-side, without any 
+This enables resizing, cropping, compression, and changing the format of the image in realtime client-side, without any
 API calls.
 
 Under the hood, Unsplash uses Imgix, a powerful image manipulation service to provide dynamic image URLs.
@@ -12,7 +12,7 @@ Under the hood, Unsplash uses Imgix, a powerful image manipulation service to pr
 
 import (
 	"fmt"
-	
+
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 

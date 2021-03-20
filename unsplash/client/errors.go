@@ -19,13 +19,14 @@ var (
 	ErrCodeQueryParamNotFound = errors.New("`code` query parameter not found in the request URL")
 	// ErrClientNotPrivate is raised when the client usedd with the Unsplash object is not authentocated
 	// for private functions.
-	ErrClientNotPrivate       = errors.New("client not private but used for functions that require private authentication")
+	ErrClientNotPrivate = errors.New("client not private but used for functions that require private authentication")
 	// ErrAuthCodeEmpty is raised when the authorization code is empty.
-	ErrAuthCodeEmpty          = errors.New("auth code provided is empty")
+	ErrAuthCodeEmpty = errors.New("auth code provided is empty")
 )
 
 // ErrQueryNotInURL is raised when a search query parameter is not part of the url.
 type ErrQueryNotInURL string
+
 // ErrRequiredScopeAbsent is raised on trying to access a private action
 // when the required scope is not provided or allowed from the authenticated user's endd.
 type ErrRequiredScopeAbsent string

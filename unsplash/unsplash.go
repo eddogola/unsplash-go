@@ -9,7 +9,7 @@ type Unsplash struct {
 	Users       *UsersService
 	Photos      *PhotosService
 	Collections *CollectionsService
-	Topics 		*TopicsService
+	Topics      *TopicsService
 	client      *client.Client
 }
 
@@ -19,6 +19,6 @@ func New(c *client.Client) *Unsplash {
 	unsplash.Users = &UsersService{client: unsplash.client}
 	unsplash.Photos = &PhotosService{client: unsplash.client}
 	unsplash.Collections = &CollectionsService{client: unsplash.client}
-	
+
 	return unsplash
 }
