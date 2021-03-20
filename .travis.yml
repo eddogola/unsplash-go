@@ -1,7 +1,6 @@
 language: go
 
 go:
- - release
  - tip
 
 env:
