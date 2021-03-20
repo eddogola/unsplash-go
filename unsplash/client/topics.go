@@ -41,7 +41,7 @@ func (c *Client) GetTopicsList(ctx context.Context, queryParams QueryParams) ([]
 		return nil, err
 	}
 	var topics []Topic
-	err = parseJSON(data, topics)
+	err = parseJSON(data, &topics)
 	if err != nil {
 		return nil, err
 	}

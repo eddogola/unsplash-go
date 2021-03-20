@@ -68,7 +68,7 @@ func (c *Client) GetUserPublicProfile(ctx context.Context, username string) (*Us
 		return nil, err
 	}
 	var user User
-	err = parseJSON(data, user)
+	err = parseJSON(data, &user)
 	if err != nil {
 		return nil, err
 	}

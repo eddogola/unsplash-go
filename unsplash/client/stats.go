@@ -69,7 +69,7 @@ func (c *Client) GetStatsTotal(ctx context.Context) (*StatsTotal, error) {
 		return nil, err
 	}
 	var stats StatsTotal
-	err = parseJSON(data, stats)
+	err = parseJSON(data, &stats)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (c *Client) GetStatsMonth(ctx context.Context) (*StatsMonth, error) {
 		return nil, err
 	}
 	var stats StatsMonth
-	err = parseJSON(data, stats)
+	err = parseJSON(data, &stats)
 	if err != nil {
 		return nil, err
 	}

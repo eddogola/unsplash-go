@@ -49,7 +49,7 @@ func (c *Client) GetCollectionsList(ctx context.Context, queryParams QueryParams
 		return nil, err
 	}
 	var collections []Collection
-	err = parseJSON(data, collections)
+	err = parseJSON(data, &collections)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func (c *Client) GetCollectionPhotos(ctx context.Context, id int, queryParams Qu
 		return nil, err
 	}
 	var pics []Photo
-	err = parseJSON(data, pics)
+	err = parseJSON(data, &pics)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (c *Client) GetRelatedCollections(ctx context.Context, id int) ([]Collectio
 		return nil, err
 	}
 	var collections []Collection
-	err = parseJSON(data, collections)
+	err = parseJSON(data, &collections)
 	if err != nil {
 		return nil, err
 	}

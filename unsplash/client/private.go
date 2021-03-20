@@ -28,7 +28,7 @@ func (c *Client) GetUserPrivateProfile(ctx context.Context) (*User, error) {
 	}
 
 	var usr User
-	err = parseJSON(data, usr)
+	err = parseJSON(data, &usr)
 	if err != nil {
 		return nil, err
 	}
