@@ -105,7 +105,7 @@ func (c *Client) GetUserPortfolioLink(ctx context.Context, username string) (*ur
 // Gets a list of photos uploaded by a user.
 // https://unsplash.com/documentation#list-a-users-photos
 func (c *Client) GetUserPhotos(ctx context.Context, username string, queryParams QueryParams) ([]Photo, error) {
-	endPoint := BaseUserEndpoint + username
+	endPoint := BaseUserEndpoint + username + "/photos"
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
 		return nil, err
