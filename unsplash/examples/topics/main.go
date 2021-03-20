@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -16,22 +15,19 @@ func main() {
 		nil, // when nil is passed, http.DefaultClient is used
 		client.NewConfig(),
 	))
-	
-	// set context.Background() for all requests
-	ctx := context.Background()
-	
+
 	// all topics
-	topics, err := unsplash.Topics.All(ctx, nil)
+	topics, err := unsplash.Topics.All(nil)
 	checkErr(err)
 	fmt.Println(topics[0])
 
 	// get topic
-	topic, err := unsplash.Topics.Get(ctx, topics[0].ID)
+	topic, err := unsplash.Topics.Get(topics[0].ID)
 	checkErr(err)
 	fmt.Println(topic.Slug)
 
 	// get topic photos
-	photos, err := unsplash.Topics.Photos(ctx, topics[0].ID, nil)
+	photos, err := unsplash.Topics.Photos(topics[0].ID, nil)
 	checkErr(err)
 	fmt.Println(photos[0].Links.Download)
 }
