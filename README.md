@@ -13,21 +13,27 @@ A simple wrapper around the unsplash API.
     - [Importing](#importing)
     - [Create Unsplash instance](#create-unsplash-instance)
     - [unsplash.Photos](#unsplashphotos)
-      - [All](#all)
-      - [Get](#get)
-      - [Random](#random)
+      - [Photos.All](#photosall)
+      - [Photos.Get](#photosget)
+      - [Photos.Random](#photosrandom)
         - [`count` not provided](#count-not-provided)
         - [`count` provided](#count-provided)
       - [Photos.Stats](#photosstats)
       - [Photos.Search](#photossearch)
     - [unsplash.Users](#unsplashusers)
-      - [PublicProfile](#publicprofile)
-      - [PortfolioURL](#portfoliourl)
-      - [Photos](#photos)
-      - [Liked Photos](#liked-photos)
-      - [Collections](#collections)
+      - [Users.PublicProfile](#userspublicprofile)
+      - [Users.PortfolioURL](#usersportfoliourl)
+      - [Users.Photos](#usersphotos)
+      - [Users.LikedPhotos](#userslikedphotos)
+      - [Users.Collections](#userscollections)
       - [Users.Stats](#usersstats)
       - [Users.Search](#userssearch)
+    - [unsplash.Collections](#unsplashcollections)
+      - [Collections.All](#collectionsall)
+      - [Collections.Get](#collectionsget)
+      - [Collections.Photos](#collectionsphotos)
+      - [Collections.Related](#collectionsrelated)
+      - [Collections.Search](#collectionssearch)
   - [Authentication](#authentication)
   - [Buggy areas](#buggy-areas)
   - [Potential areas of improvement](#potential-areas-of-improvement)
@@ -51,22 +57,28 @@ You can then [create a new application](https://unsplash.com/oauth/applications/
 
 - [Importing](#importing)
 - [Initialize Unsplash](#create-unsplash-instance)
-- [unsplash.Photos]
+- [unsplash.Photos](#unsplashphotos)
 
-  - [All](#all)
-  - [Get](#get)
-  - [Random](#random)
+  - [All](#photosall)
+  - [Get](#photosget)
+  - [Random](#photosrandom)
   - [Stats](#photossearch)
   - [Search](#photossearch)
-- [unsplash.Users]
+- [unsplash.Users](#unsplashusers)
 
-  - [PublicProfile](#publicprofile)
-  - [PortfolioURL](#portfoliourl)
-  - [Photos](#photos)
-  - [Liked Photos](#liked-photos)
-  - [Collections](#collections)
+  - [PublicProfile](#userspublicprofile)
+  - [PortfolioURL](#usersportfoliourl)
+  - [Photos](#usersphotos)
+  - [Liked Photos](#userslikedphotos)
+  - [Collections](#userscollections)
   - [Stats](#usersstats)
   - [Search](#userssearch)
+- [unsplash.Collections](#unsplashcollections)
+  - [All](#collectionsall)
+  - [Get](#collectionsget)
+  - [Photos](#collectionsphotos)
+  - [Related](#collectionsrelated)
+  - [Search](#collectionssearch)
 
 ### Importing
 
@@ -96,7 +108,7 @@ unsplash := unsplash.New(client.New(
 
 ### unsplash.Photos
 
-#### All
+#### Photos.All
 
 Get a paginated list of all unsplash Photos.
 
@@ -104,7 +116,7 @@ Get a paginated list of all unsplash Photos.
 pics, err := unsplash.Photos.All(nil)
 ```
 
-#### Get
+#### Photos.Get
 
 Get a specific photo.
 
@@ -112,7 +124,7 @@ Get a specific photo.
 pic, err := unsplash.Photos.Get(`photo-id`)
 ```
 
-#### Random
+#### Photos.Random
 
 Get a random photo. Returns an interface depending on whether the `count` query parameter is provided.
 If present, a list of photos is returned, otherwise, a single photo is returned
@@ -150,7 +162,7 @@ fmt.Println(searchResult.Results)
 
 ### unsplash.Users
 
-#### PublicProfile
+#### Users.PublicProfile
 
 Get a user's public profile. Returns a `*client.User` object.
 
@@ -158,7 +170,7 @@ Get a user's public profile. Returns a `*client.User` object.
 profile, err := unsplash.Users.PublicProfile(`username`)
 ```
 
-#### PortfolioURL
+#### Users.PortfolioURL
 
 Parses a user's portoflio URL, returning it in a `*url.URL` object.
 
@@ -166,7 +178,7 @@ Parses a user's portoflio URL, returning it in a `*url.URL` object.
 url, err := unsplash.Users.PortfolioURL(`username`)
 ```
 
-#### Photos
+#### Users.Photos
 
 Get a user's photos.
 
@@ -174,7 +186,7 @@ Get a user's photos.
 photos, err := unsplash.Users.Photos(`username`, nil)
 ```
 
-#### Liked Photos
+#### Users.LikedPhotos
 
 Get a user's liked photos.
 
@@ -182,7 +194,7 @@ Get a user's liked photos.
 likedPhotos, err := unsplash.Users.LikedPhotos(`username`, nil)
 ```
 
-#### Collections
+#### Users.Collections
 
 Get collections created by user.
 
@@ -205,6 +217,48 @@ Search for a user. Returns search results in a `*client.UserSearchResults` objec
 ```go
 searchResult, err := unsplash.Users.Search(`username`, nil)
 fmt.Println(searchResult.Results)
+```
+
+### unsplash.Collections
+
+#### Collections.All
+
+Returns a list of all collections.
+
+```go
+collections, err := unsplash.Collections.All(nil)
+```
+
+#### Collections.Get
+
+Get a specific collection
+
+```go
+collection, err := unsplash.Collections.Get(`collectionID`)
+```
+
+#### Collections.Photos
+
+Returns the given collection's photos.
+
+```go
+photos, err := unsplash.Collections.Photos(`collectionID`, nil)
+```
+
+#### Collections.Related
+
+Returns a list of collections related to the given collection.
+
+```go
+related, err := unsplash.Collections.Related(`collectionID`)
+```
+
+#### Collections.Search
+
+Returns the results of searching a collection in a `*client.CollectionSearchResult` object.
+
+```go
+searchResults, err := unsplash.Collections.Search("code", nil)
 ```
 
 ## Authentication
