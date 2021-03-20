@@ -8,10 +8,10 @@ import (
 	"github.com/eddogola/unsplash-go/unsplash/client"
 )
 
-func ExamplePhotosService_GetRandom() {
+func ExamplePhotosService_Random() {
 	cl := client.New(os.Getenv("CLIENT_ID"), nil, client.NewConfig())
 	unsplash := New(cl)
-	res, err := unsplash.Photos.GetRandom(context.Background(), nil)
+	res, err := unsplash.Photos.Random(context.Background(), nil)
 	if err != nil {
 		fmt.Println(err)
 	}
