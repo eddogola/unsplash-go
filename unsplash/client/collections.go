@@ -7,7 +7,7 @@ import (
 
 // Collection defines fields in a collection resource
 type Collection struct {
-	ID              int    `json:"id"`
+	ID              string    `json:"id"`
 	Title           string `json:"title"`
 	Description     string `json:"description"`
 	PublishedAt     string `json:"published_at"`
@@ -60,7 +60,7 @@ func (c *Client) GetCollectionsList(ctx context.Context, queryParams QueryParams
 // if a collection of the given id is found.
 // Get a collection using id
 // https://unsplash.com/documentation#get-a-collection
-func (c *Client) GetCollection(ctx context.Context, id int) (*Collection, error) {
+func (c *Client) GetCollection(ctx context.Context, id string) (*Collection, error) {
 	endPoint := CollectionsListEndpoint + fmt.Sprint(id)
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
@@ -79,7 +79,7 @@ func (c *Client) GetCollection(ctx context.Context, id int) (*Collection, error)
 // is returned.
 // Retrieve a collection's photos
 // https://unsplash.com/documentation#get-a-collections-photos
-func (c *Client) GetCollectionPhotos(ctx context.Context, id int, queryParams QueryParams) ([]Photo, error) {
+func (c *Client) GetCollectionPhotos(ctx context.Context, id string, queryParams QueryParams) ([]Photo, error) {
 	endPoint := CollectionsListEndpoint + fmt.Sprint(id) + "/photos"
 	link, err := buildURL(endPoint, queryParams)
 	if err != nil {
@@ -101,7 +101,7 @@ func (c *Client) GetCollectionPhotos(ctx context.Context, id int, queryParams Qu
 // objects if the collection of the given id is found.
 // Retrieve a list of collections related to this one.
 // https://unsplash.com/documentation#list-a-collections-related-collections
-func (c *Client) GetRelatedCollections(ctx context.Context, id int) ([]Collection, error) {
+func (c *Client) GetRelatedCollections(ctx context.Context, id string) ([]Collection, error) {
 	endPoint := CollectionsListEndpoint + fmt.Sprint(id) + "/related"
 	data, err := c.getBodyBytes(ctx, endPoint)
 	if err != nil {
