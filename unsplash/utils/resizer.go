@@ -62,7 +62,7 @@ func (rOptions ResizeOptions) String() string {
 	return result
 }
 
-// Resize takes a ResizeOptions object, dynamically resizes Photo.URLs.Raw using the options
+// GetResizedPhotoURL takes a picture and a ResizeOptions object, dynamically resizes Photo.URLs.Raw using the options
 // and returns the resulting URL
 func GetResizedPhotoURL(pic *client.Photo, rOptions ResizeOptions) string {
 	return pic.URLs.Raw + rOptions.String()
