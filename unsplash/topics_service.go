@@ -20,17 +20,20 @@ type TopicsService struct {
 }
 
 // All returns a paginated list of all Topics on unsplash
-func (ts *TopicsService) All(ctx context.Context, queryParams client.QueryParams) ([]client.Topic, error) {
+func (ts *TopicsService) All(queryParams client.QueryParams) ([]client.Topic, error) {
+	ctx := context.Background()
 	return ts.client.GetTopicsList(ctx, queryParams)
 }
 
 // Get returns a specific Topic, using the topic's ID or slug
-func (ts *TopicsService) Get(ctx context.Context, topicIDOrSlug string) (*client.Topic, error) {
+func (ts *TopicsService) Get(topicIDOrSlug string) (*client.Topic, error) {
+	ctx := context.Background()
 	return ts.client.GetTopic(ctx, topicIDOrSlug)
 }
 
 // Photos returns a paginated list of Photos under the Topic requested using the
 // topic's ID or slug
-func (ts *TopicsService) Photos(ctx context.Context, topicIDOrSlug string, queryParams client.QueryParams) ([]client.Photo, error) {
+func (ts *TopicsService) Photos(topicIDOrSlug string, queryParams client.QueryParams) ([]client.Photo, error) {
+	ctx := context.Background()
 	return ts.client.GetTopicPhotos(ctx, topicIDOrSlug, queryParams)
 }
