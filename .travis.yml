@@ -16,6 +16,7 @@ before_script:
   - go get honnef.co/go/tools/cmd/staticcheck
 
 script:
+ - test -z $(gofmt -s -l $GO_FILES)     #Fail if a .go file hasn't been formatted with gofmt
  - cd unsplash
  - go test -race -v -coverprofile=coverage.txt -covermode=atomic .
  - go vet .
