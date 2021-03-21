@@ -82,6 +82,14 @@ func main() {
 	checkErr(err)
 	fmt.Println(car.Photo.AltDescription)
 
+	// remove photo from collection
+	car, err = privateUnsplash.Collections.RemovePhoto(newCollection.ID, map[string]string{
+		"collection_id": newCollection.ID,
+		"photo_id": "bLqKgljgpf4",
+	})
+	checkErr(err)
+	fmt.Println(car.Photo.AltDescription)
+
 	// delete collection
 	err = privateUnsplash.Collections.Delete(newCollection.ID)
 	checkErr(err)
