@@ -74,6 +74,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	// add photo to collection
+	car, err := privateUnsplash.Collections.AddPhoto(newCollection.ID, map[string]string{
+		"collection_id": newCollection.ID,
+		"photo_id": "bLqKgljgpf4",
+	})
+	checkErr(err)
+	fmt.Println(car.Photo.AltDescription)
+
 	// delete collection
 	err = privateUnsplash.Collections.Delete(newCollection.ID)
 	checkErr(err)
