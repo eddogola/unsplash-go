@@ -10,34 +10,34 @@ import (
 
 func main() {
 	// Initialize unsplash for public actions
-	unsplash := unsplash.New(client.New(
+	publicUnsplash := unsplash.New(client.New(
 		os.Getenv("CLIENT_ID"),
 		nil, // when nil is passed, http.DefaultClient is used
 		client.NewConfig(),
 	))
 
 	// all collections
-	collections, err := unsplash.Collections.All(nil)
+	collections, err := publicUnsplash.Collections.All(nil)
 	checkErr(err)
 	fmt.Println(collections[0].Links.HTML)
 
 	// get collection
-	collection, err := unsplash.Collections.Get(collections[0].ID)
+	collection, err := publicUnsplash.Collections.Get(collections[0].ID)
 	checkErr(err)
 	fmt.Println(collection.Title)
 
 	// collection photos
-	photos, err := unsplash.Collections.Photos(collections[0].ID, nil)
+	photos, err := publicUnsplash.Collections.Photos(collections[0].ID, nil)
 	checkErr(err)
 	fmt.Println(photos[0].Links.HTML)
 
 	// related collections
-	related, err := unsplash.Collections.Related(collections[0].ID)
+	related, err := publicUnsplash.Collections.Related(collections[0].ID)
 	checkErr(err)
 	fmt.Println(related[0].Title)
 
 	// search collections
-	searchResults, err := unsplash.Collections.Search("code", nil)
+	searchResults, err := publicUnsplash.Collections.Search("code", nil)
 	checkErr(err)
 	fmt.Println(searchResults.Results[0].Title)
 }
