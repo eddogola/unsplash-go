@@ -74,6 +74,9 @@ func main() {
 		os.Exit(1)
 	}
 
+	// delete collection
+	err = privateUnsplash.Collections.Delete(newCollection.ID)
+	checkErr(err)
 }
 
 func checkErr(err error) {
