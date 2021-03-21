@@ -50,13 +50,17 @@ func main() {
 		client.NewAuthScopes("write_likes"),
 		client.NewConfig(),
 	)
+	privateUnsplash := unsplash.New(privClient)
 	/*********************************************************************/
 
 	// like photo
-	privateUnsplash := unsplash.New(privClient)
 	lr, err := privateUnsplash.Photos.Like("bLqKgljgpf4")
 	checkErr(err)
 	fmt.Println(lr.Photo.Links.Download)
+
+	// unlike photo
+	err = privateUnsplash.Photos.Unlike("bLqKgljgpf4")
+	checkErr(err)
 }
 
 func checkErr(err error) {
