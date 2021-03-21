@@ -43,6 +43,7 @@ A simple wrapper around the unsplash API.
       - [Topics.All](#topicsall)
       - [Topics.Get](#topicsget)
       - [Topics.Photos](#topicsphotos)
+  - [Examples](#examples)
   - [Authentication](#authentication)
   - [Buggy areas](#buggy-areas)
   - [Potential areas of improvement](#potential-areas-of-improvement)
@@ -299,6 +300,10 @@ Returns a list of `*client.Photo`s in the given the topic's ID.
 ```go
 photos, err := unsplash.Topics.Photos(`topicID`, nil)
 ```
+
+## Examples
+
+Find examples on [Github](https://github.com/eddogola/unsplash-go/tree/main/unsplash/examples)
 
 ## Authentication
 
