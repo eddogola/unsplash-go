@@ -41,26 +41,6 @@ func main() {
 	searchResult, err := publicUnsplash.Photos.Search("food", nil)
 	checkErr(err)
 	fmt.Println(searchResult.Results[0].Links.Download)
-
-	/**Setup private client for actions requiring private authorization**/
-	privClient, err := client.NewPrivateAuthClient(
-		os.Getenv("CLIENT_ID"),
-		os.Getenv("CLIENT_SECRET"),
-		os.Getenv("REDIRECT_URI"),
-		client.NewAuthScopes("write_likes"),
-		client.NewConfig(),
-	)
-	privateUnsplash := unsplash.New(privClient)
-	/*********************************************************************/
-
-	// like photo
-	lr, err := privateUnsplash.Photos.Like("bLqKgljgpf4")
-	checkErr(err)
-	fmt.Println(lr.Photo.Links.Download)
-
-	// unlike photo
-	err = privateUnsplash.Photos.Unlike("bLqKgljgpf4")
-	checkErr(err)
 }
 
 func checkErr(err error) {
