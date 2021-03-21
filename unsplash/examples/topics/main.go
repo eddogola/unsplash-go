@@ -19,12 +19,12 @@ func main() {
 	// all topics
 	topics, err := unsplash.Topics.All(nil)
 	checkErr(err)
-	fmt.Println(topics[0])
+	fmt.Println(topics[0].Links.HTML)
 
 	// get topic
 	topic, err := unsplash.Topics.Get(topics[0].ID)
 	checkErr(err)
-	fmt.Println(topic.Slug)
+	fmt.Println(topic.Title)
 
 	// get topic photos
 	photos, err := unsplash.Topics.Photos(topics[0].ID, nil)

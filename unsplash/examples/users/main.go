@@ -21,7 +21,7 @@ func main() {
 	// public profile
 	profile, err := unsplash.Users.PublicProfile(username)
 	checkErr(err)
-	fmt.Println(profile)
+	fmt.Println(profile.Name)
 
 	// portfolio url
 	url, err := unsplash.Users.PortfolioURL(username)
@@ -36,22 +36,22 @@ func main() {
 	// user liked photos
 	likedPhotos, err := unsplash.Users.LikedPhotos(username, nil)
 	checkErr(err)
-	fmt.Println(likedPhotos[0])
+	fmt.Println(likedPhotos[0].Links.HTML)
 
 	// user collections
 	collections, err := unsplash.Users.Collections(username, nil)
 	checkErr(err)
-	fmt.Println(collections[0])
+	fmt.Println(collections[0].Title)
 
 	// user stats
 	stats, err := unsplash.Users.Stats(username, nil)
 	checkErr(err)
-	fmt.Println(stats)
+	fmt.Println(stats.Views.Total)
 
 	// search users
 	searchResults, err := unsplash.Users.Search(username, nil)
 	checkErr(err)
-	fmt.Println(searchResults)
+	fmt.Println(searchResults.Results[0].Links.HTML)
 }
 
 func checkErr(err error) {
