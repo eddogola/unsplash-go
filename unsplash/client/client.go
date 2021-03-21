@@ -18,7 +18,7 @@ type Client struct {
 	HTTPClient *http.Client
 	Config     *Config
 	Private    bool // true if private authentication is required to make requests, default should be false
-	AuthScopes AuthScopes
+	AuthScopes *AuthScopes
 }
 
 // Config sets up configuration details to be used in making requests.
@@ -57,6 +57,8 @@ func (c *Client) getHTTP(ctx context.Context, link string) (*http.Response, erro
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
+	} else if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return resp, nil
 }
@@ -75,6 +77,8 @@ func (c *Client) postHTTP(ctx context.Context, link string, postData map[string]
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
+	} else if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return resp, nil
 }
@@ -93,6 +97,8 @@ func (c *Client) putHTTP(ctx context.Context, link string, putData map[string]st
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
+	} else if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return resp, nil
 }
@@ -111,6 +117,8 @@ func (c *Client) deleteHTTP(ctx context.Context, link string, dt map[string]stri
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
+	} else if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return resp, nil
 }
@@ -119,8 +127,6 @@ func (c *Client) getBodyBytes(ctx context.Context, link string) ([]byte, error) 
 	resp, err := c.getHTTP(ctx, link)
 	if err != nil {
 		return nil, err
-	} else if resp.StatusCode != http.StatusOK {
-		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	defer resp.Body.Close()
 
