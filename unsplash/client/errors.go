@@ -10,7 +10,7 @@ import (
 // Errors defines the structure Unsplash responds with when an error
 // is encountered while using their API.
 type Errors struct {
-	Error string `json:"error"`
+	Error     string   `json:"error"`
 	ErrorList []string `json:"errors"`
 }
 

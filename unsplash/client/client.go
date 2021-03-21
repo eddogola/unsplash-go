@@ -61,7 +61,7 @@ func (c *Client) getHTTP(ctx context.Context, link string) (*http.Response, erro
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if resp.StatusCode != http.StatusOK {
 		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
@@ -83,7 +83,7 @@ func (c *Client) postHTTP(ctx context.Context, link string, postData map[string]
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if resp.StatusCode != http.StatusCreated {
 		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
@@ -128,7 +128,7 @@ func (c *Client) deleteHTTP(ctx context.Context, link string, dt map[string]stri
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
-	} 
+	}
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
