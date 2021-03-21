@@ -151,9 +151,6 @@ func (c *Client) UnlikePhoto(ctx context.Context, photoID string) error {
 		return err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != 204 {
-		return ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
-	}
 	return nil
 }
 
@@ -248,10 +245,6 @@ func (c *Client) DeleteCollection(ctx context.Context, collectionID string) erro
 		return err
 	}
 	defer resp.Body.Close()
-
-	if resp.StatusCode != 204 {
-		return ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
-	}
 	return nil
 }
 
