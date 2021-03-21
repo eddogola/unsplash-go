@@ -18,7 +18,7 @@ type Client struct {
 	HTTPClient *http.Client
 	Config     *Config
 	Private    bool // true if private authentication is required to make requests, default should be false
-	AuthScopes AuthScopes
+	AuthScopes *AuthScopes
 }
 
 // Config sets up configuration details to be used in making requests.
@@ -29,7 +29,12 @@ type Config struct {
 
 // NewConfig constructs an empty Config object
 func NewConfig() *Config {
-	return &Config{make(http.Header)}
+	headers := make(http.Header)
+	headers.Add("Content-Type", "application/json")
+	headers.Add("Accept-Version", "v1") // Add api version
+	// Unsplash strongly encourages a specific request of the api version
+	// do sth to get access token
+	return &Config{headers}
 }
 
 // New initializes a new Client.
@@ -38,8 +43,6 @@ func New(clientID string, client *http.Client, config *Config) *Client {
 	if client == nil {
 		client = http.DefaultClient
 	}
-	config.Headers.Add("Accept-Version", "v1") // Add api version
-	// Unsplash strongly encourages a specific request of the api version
 	config.Headers.Add("Authorization", fmt.Sprintf("Client-ID %s", clientID))
 
 	return &Client{ClientID: clientID, HTTPClient: client, Config: config, Private: false}
@@ -57,6 +60,10 @@ func (c *Client) getHTTP(ctx context.Context, link string) (*http.Response, erro
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return resp, nil
 }
@@ -76,6 +83,10 @@ func (c *Client) postHTTP(ctx context.Context, link string, postData map[string]
 	if err != nil {
 		return nil, err
 	}
+
+	if resp.StatusCode != http.StatusCreated {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
+	}
 	return resp, nil
 }
 
@@ -93,6 +104,12 @@ func (c *Client) putHTTP(ctx context.Context, link string, putData map[string]st
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
+	} else if resp.StatusCode != http.StatusCreated {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	return resp, nil
 }
@@ -112,6 +129,12 @@ func (c *Client) deleteHTTP(ctx context.Context, link string, dt map[string]stri
 	if err != nil {
 		return nil, err
 	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
+	} else if resp.StatusCode != http.StatusNoContent {
+		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
+	}
 	return resp, nil
 }
 
@@ -119,8 +142,6 @@ func (c *Client) getBodyBytes(ctx context.Context, link string) ([]byte, error) 
 	resp, err := c.getHTTP(ctx, link)
 	if err != nil {
 		return nil, err
-	} else if resp.StatusCode != http.StatusOK {
-		return nil, ErrStatusCode{resp.StatusCode, getErrReasons(resp)}
 	}
 	defer resp.Body.Close()
 

@@ -10,37 +10,37 @@ import (
 
 func main() {
 	// Initialize unsplash for public actions
-	unsplash := unsplash.New(client.New(
+	publicUnsplash := unsplash.New(client.New(
 		os.Getenv("CLIENT_ID"),
 		nil, // when nil is passed, http.DefaultClient is used
 		client.NewConfig(),
 	))
 
 	// All photos
-	pics, err := unsplash.Photos.All(nil)
+	pics, err := publicUnsplash.Photos.All(nil)
 	checkErr(err)
-	fmt.Println(pics[0])
+	fmt.Println(pics[0].Links.Download)
 
 	// get photo
-	pic, err := unsplash.Photos.Get(pics[0].ID)
+	pic, err := publicUnsplash.Photos.Get(pics[0].ID)
 	checkErr(err)
 	fmt.Println(pic.Links.Download)
 
 	// Random photo
-	res, err := unsplash.Photos.Random(nil)
+	res, err := publicUnsplash.Photos.Random(nil)
 	checkErr(err)
 	randomPhoto := res.(*client.Photo)
 	fmt.Println(randomPhoto.Links.Download)
 
 	// photo stats
-	stats, err := unsplash.Photos.Stats(pics[0].ID, nil)
+	stats, err := publicUnsplash.Photos.Stats(pics[0].ID, nil)
 	checkErr(err)
-	fmt.Println(stats)
+	fmt.Println(stats.ID)
 
 	// search photo
-	searchResult, err := unsplash.Photos.Search("food", nil)
+	searchResult, err := publicUnsplash.Photos.Search("food", nil)
 	checkErr(err)
-	fmt.Println(searchResult.Results[0])
+	fmt.Println(searchResult.Results[0].Links.Download)
 }
 
 func checkErr(err error) {

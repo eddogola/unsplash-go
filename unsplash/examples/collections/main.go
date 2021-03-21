@@ -19,7 +19,7 @@ func main() {
 	// all collections
 	collections, err := unsplash.Collections.All(nil)
 	checkErr(err)
-	fmt.Println(collections[0])
+	fmt.Println(collections[0].Links.HTML)
 
 	// get collection
 	collection, err := unsplash.Collections.Get(collections[0].ID)
@@ -29,17 +29,17 @@ func main() {
 	// collection photos
 	photos, err := unsplash.Collections.Photos(collections[0].ID, nil)
 	checkErr(err)
-	fmt.Println(photos[0])
+	fmt.Println(photos[0].Links.HTML)
 
 	// related collections
 	related, err := unsplash.Collections.Related(collections[0].ID)
 	checkErr(err)
-	fmt.Println(related[0])
+	fmt.Println(related[0].Title)
 
 	// search collections
 	searchResults, err := unsplash.Collections.Search("code", nil)
 	checkErr(err)
-	fmt.Println(searchResults.Results[0])
+	fmt.Println(searchResults.Results[0].Title)
 }
 
 func checkErr(err error) {
