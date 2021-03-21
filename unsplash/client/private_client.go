@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"fmt"
 
 	"golang.org/x/oauth2"
@@ -60,12 +61,12 @@ func NewPrivateAuthClient(clientID, clientSecret, redirectURI string, as *AuthSc
 		return nil, err
 	}
 	// get token
-	tok, err := conf.Exchange(oauth2.NoContext, code)
+	tok, err := conf.Exchange(context.Background(), code)
 	if err != nil {
 		return nil, err
 	}
 	// create client
-	client := conf.Client(oauth2.NoContext, tok)
+	client := conf.Client(context.Background(), tok)
 
 	c := &Client{ClientID: clientID,
 		HTTPClient: client,
