@@ -53,15 +53,27 @@ func main() {
 	/*********************************************************************/
 
 	// create collection
-	collection, err = privateUnsplash.Collections.Create(map[string]string{
+	newCollection, err := privateUnsplash.Collections.Create(map[string]string{
 		"title": "unsplash-go test",
 		"description": "will run travis tests then disappear",
 	})
 	checkErr(err)
-	if collection.Title != "unsplash-go test" {
+	if newCollection.Title != "unsplash-go test" {
 		fmt.Printf("expected %v but got %v", "unsplash-go test", collection.Title)
 		os.Exit(1)
 	}
+
+	// update collection
+	updatedCollection, err := privateUnsplash.Collections.Update(newCollection.ID, map[string]string{
+		"title": "unsplash-go TEST",
+		"description": "will run travis tests then disappear",
+	})
+	checkErr(err)
+	if updatedCollection.Title != "unsplash-go TEST" {
+		fmt.Printf("expected %v but got %v", "unsplash-go TEST", updatedCollection.Title)
+		os.Exit(1)
+	}
+
 }
 
 func checkErr(err error) {
