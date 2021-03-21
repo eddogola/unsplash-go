@@ -10,6 +10,7 @@ import (
 // Errors defines the structure Unsplash responds with when an error
 // is encountered while using their API.
 type Errors struct {
+	Error string `json:"error"`
 	ErrorList []string `json:"errors"`
 }
 
@@ -51,11 +52,26 @@ func (e ErrStatusCode) Error() string {
 }
 
 func getErrReasons(resp *http.Response) []string {
-	data, _ := ioutil.ReadAll(resp.Body)
+	var otherErrs []error
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		otherErrs = append(otherErrs, err)
+	}
 
 	var errs Errors
-	err := parseJSON(data, &errs)
+	err = parseJSON(data, &errs)
+	if err != nil {
+		otherErrs = append(otherErrs, err)
+	}
 
-	errs.ErrorList = append(errs.ErrorList, err.Error())
-	return errs.ErrorList
+	if len(otherErrs) > 0 {
+		for _, err := range otherErrs {
+			errs.ErrorList = append(errs.ErrorList, err.Error())
+		}
+	}
+
+	if len(errs.ErrorList) > 0 {
+		return errs.ErrorList
+	}
+	return []string{errs.Error}
 }
