@@ -29,7 +29,12 @@ type Config struct {
 
 // NewConfig constructs an empty Config object
 func NewConfig() *Config {
-	return &Config{make(http.Header)}
+	headers := make(http.Header)
+	headers.Add("Content-Type", "application/json")
+	headers.Add("Accept-Version", "v1") // Add api version
+	// Unsplash strongly encourages a specific request of the api version
+	// do sth to get access token
+	return &Config{headers}
 }
 
 // New initializes a new Client.
@@ -38,8 +43,6 @@ func New(clientID string, client *http.Client, config *Config) *Client {
 	if client == nil {
 		client = http.DefaultClient
 	}
-	config.Headers.Add("Accept-Version", "v1") // Add api version
-	// Unsplash strongly encourages a specific request of the api version
 	config.Headers.Add("Authorization", fmt.Sprintf("Client-ID %s", clientID))
 
 	return &Client{ClientID: clientID, HTTPClient: client, Config: config, Private: false}
