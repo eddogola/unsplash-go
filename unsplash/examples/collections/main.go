@@ -54,7 +54,7 @@ func main() {
 
 	// create collection
 	newCollection, err := privateUnsplash.Collections.Create(map[string]string{
-		"title": "unsplash-go test",
+		"title":       "unsplash-go test",
 		"description": "will run travis tests then disappear",
 	})
 	checkErr(err)
@@ -65,7 +65,7 @@ func main() {
 
 	// update collection
 	updatedCollection, err := privateUnsplash.Collections.Update(newCollection.ID, map[string]string{
-		"title": "unsplash-go TEST",
+		"title":       "unsplash-go TEST",
 		"description": "will run travis tests then disappear",
 	})
 	checkErr(err)
@@ -77,7 +77,7 @@ func main() {
 	// add photo to collection
 	car, err := privateUnsplash.Collections.AddPhoto(newCollection.ID, map[string]string{
 		"collection_id": newCollection.ID,
-		"photo_id": "bLqKgljgpf4",
+		"photo_id":      "bLqKgljgpf4",
 	})
 	checkErr(err)
 	fmt.Println(car.Photo.AltDescription)
@@ -85,7 +85,7 @@ func main() {
 	// remove photo from collection
 	car, err = privateUnsplash.Collections.RemovePhoto(newCollection.ID, map[string]string{
 		"collection_id": newCollection.ID,
-		"photo_id": "bLqKgljgpf4",
+		"photo_id":      "bLqKgljgpf4",
 	})
 	checkErr(err)
 	fmt.Println(car.Photo.AltDescription)
